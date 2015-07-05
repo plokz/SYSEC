@@ -104,7 +104,7 @@ public class DaoRegistro {
         return id;
     }
 
-    public int altaUsuario(UsuariosBean bean) {
+    public int altaUsuario(UsuariosBean bean, String[] valuesChecks) {
         int resultado = 0;
         String sqlAltaUsuario = "insert into usuarios values (null,?,?,?,?,?,?,?,?,?);";
         PreparedStatement ps = null;
@@ -121,6 +121,26 @@ public class DaoRegistro {
             ps.setInt(8, bean.getEstadoBean().getIdEstado());
             ps.setInt(9, bean.getTipoBean().getIdTipo());
             resultado = ps.executeUpdate();
+
+            System.out.println("Tamaño array" + valuesChecks.length);
+            if (valuesChecks.length > 0) {
+                String sqlAltaPreferencia = "insert into tienepreferencia values (null,?,?);";
+
+                DaoLogin login = new DaoLogin();
+                bean = login.consultarUsuario(bean.getUsuario(), bean.getPassword());
+                int idUsuarioReg = bean.getIdUsuario();
+                System.out.println("ID USUARIO REG" + idUsuarioReg);
+
+                for (String value : valuesChecks) {
+                    ps = (PreparedStatement) conexion.prepareStatement(sqlAltaPreferencia);
+                    int idpref = (Integer.parseInt(value));
+
+                    ps.setInt(1, idpref);
+                    ps.setInt(2, idUsuarioReg);
+                    ps.executeUpdate();
+                }
+            }
+
             conexion.close();
             ps.close();
         } catch (SQLException sql) {

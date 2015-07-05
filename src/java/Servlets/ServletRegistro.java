@@ -69,15 +69,11 @@ public class ServletRegistro extends HttpServlet {
                     JSON = "{\"parametros\": [{\"estado\": \"" + gson.toJson(correoEsta) + "\",\"usuarioCreado\":\"" + cadena[0] + sb + "\"}]}";
                     out.print(JSON);
                     break;
-                case 3:                   
-                    
-                    String[] values = request.getParameterValues("checkbox");
-                    for (String value : values) {
-                        System.out.println("Valores enviados " + value);
-                    }
-                    
+                case 3:
+
                     TipoBean beantipo = new TipoBean();
                     beantipo.setIdTipo(2);
+                    String[] valuesCheck = null;
 
                     email = request.getParameter("email");
                     String user = request.getParameter("user");
@@ -98,7 +94,12 @@ public class ServletRegistro extends HttpServlet {
                     bean.setTipoBean(beantipo);
                     bean.setEstadoBean(dao.consultaridEstado(estado));
 
-                    dao.altaUsuario(bean);
+                    try {
+                        valuesCheck = request.getParameterValues("checkbox");
+                        dao.altaUsuario(bean, valuesCheck);
+                    } catch (Exception e) {
+                        dao.altaUsuario(bean, valuesCheck);
+                    }
 
                     request.setAttribute("texto", "El registro se completo");
                     request.getRequestDispatcher("/index.jsp").forward(request, response);
