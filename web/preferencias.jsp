@@ -64,6 +64,8 @@
                     url: context + '/ServletPreferencias',
                     type: 'POST',
                     success: function(data) {
+                        $('#cuerpotablaPricipal').remove();
+
                         var tableBody = "<tbody id='cuerpotablaPricipal'>";
 
                         for (var i in data) {
