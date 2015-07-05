@@ -36,12 +36,23 @@ public class ServletPreferencias extends HttpServlet {
                     out.println(gson.toJson(preferencia));
                     break;
 
-                case 2:  // modificacion de una preferencia con base en su id
+                case 2:  // Modificacion de una preferencia con base en su id
                     id = Integer.parseInt(request.getParameter("id"));
                     String descripcion = request.getParameter("descripcion");
 
-                    boolean status = daoPreferencias.modificar(id, descripcion);
-                    out.println(status);
+                    daoPreferencias.modificar(id, descripcion);
+
+                    request.setAttribute("mensaje", "Información modificada exitosamente");
+                    this.doGet(request, response);
+                    break;
+
+                case 3:  // Agregar una preferencia
+                    descripcion = request.getParameter("descripcion");
+
+                    daoPreferencias.agregar(descripcion);
+
+                    request.setAttribute("mensaje", "Preferencia agregada exitosamente");
+                    this.doGet(request, response);
                     break;
 
                 default:  // Consulta general de las preferencias
@@ -57,7 +68,7 @@ public class ServletPreferencias extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/principalUsuarios.jsp");
+        RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/preferencias.jsp");
         dispatcher.forward(request, response);
     }
 

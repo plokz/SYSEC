@@ -1,4 +1,4 @@
-<%-- 
+<%--
     Document   : preferencias
     Created on : 5/07/2015, 01:39:40 AM
     Author     : aya
@@ -6,7 +6,7 @@
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%
-    String mensaje = (String) request.getAttribute("texto") != null ? (String) request.getAttribute("texto") : "";
+    String mensaje = (String) request.getAttribute("mensaje") != null ? (String) request.getAttribute("mensaje") : "";
 %>
 <!DOCTYPE html>
 <html>
@@ -41,25 +41,24 @@
         <script src="<%=context%>/js/jquery.dataTables.min.js"></script>
         <script src="<%=context%>/js/dataTables.bootstrap.js"></script>
         <script>
-            $(document).ready(function () {
+            $(function () {
+                obtenerPreferencias();
 
-                obtenerPost();
-
-                $('#addP').click(function () {
-                    $('#agregarPost').fadeIn();
-                    $('#addP').hide();
-                    $('#listaPost').hide();
+                $('#botonAgregar').click(function () {
+                    $('#agregarPreferencia').fadeIn();
+                    $('#botonAgregar').hide();
+                    $('#listaPreferencias').hide();
                 });
 
                 $('#cancelarP').click(function () {
-                    $('#agregarPost').hide();
-                    $('#addP').fadeIn();
-                    $('#listaPost').fadeIn();
+                    $('#agregarPreferencia').hide();
+                    $('#botonAgregar').fadeIn();
+                    $('#listaPreferencias').fadeIn();
                 });
             });
 
 
-            function obtenerPost() {
+            function obtenerPreferencias() {
                 var context = $('#contexto').val();
 
                 $.ajax({
@@ -81,23 +80,21 @@
                         alert("Error de conexión");
                     }
                 });
-
             }
 
             $(document).on("click", ".open-Modal", function () {
                 var context = $('#contexto').val();
-                var cadena = $(this).data('id');
+                var id = $(this).data('id');
 
                 $.ajax({
                     url: context + '/ServletPreferencias',
                     type: 'POST',
                     data: {
                         "opcion": 1,
-                        "id": cadena
+                        "id": id
                     },
                     success: function (data) {
-                        console.log(data.preferencia.toUpperCase());
-                        $('#nombre').val(data.idPreferencias);
+                        $('#id').val(data.idPreferencias);
                         $('#descripcion').val(data.preferencia.toUpperCase());
                     },
                     error: function () {
@@ -113,25 +110,21 @@
         <input type="hidden" name="contexto" id="contexto" value="<%=context%>"/>
 
         <!-- Banner -->
-        <div id="agregarPost" style="display: none">
+        <div id="agregarPreferencia" style="display: none">
             <div class="box container">
                 <div class="col-xs-12">
-                    <h3 class="text-center">Publicar Post!</h3></br>
+                    <h3 class="text-center">Agregar preferencia</h3></br>
                     <div class="greybox col-md-5 section text-center">
-                        <form id="enviar" method="post" action="<%=context%>/ServletPost?opcion=3" class="form-horizontal">
+                        <form method="post" action="<%=context%>/ServletPreferencias" class="form-horizontal">
                             <div class="input-group">
                                 <span class="input-group-addon"><i class="glyphicon glyphicon-user"></i></span>
-                                <input id="descripcion" name="nombrePost" type="text" class="form-control" placeholder="Titulo de Post">                                        
-                            </div>
-                            <br>
-                            <div class="input-group">
-                                <span class="input-group-addon"><i class="fa fa-money"></i></span>
-                                <input id="presupuestoPost" name="presupuestoPost" type="text" class="form-control" placeholder="Presupuesto">
+                                <input name="opcion" type="hidden" value="3">
+                                <input name="descripcion" type="text" class="form-control" placeholder="Descripcion de la preferencia">
                             </div>
                             <br>
                             <div id="setGroupGrade">
                                 <br>
-                                <button data-toggle="modal" class="open-Modal btn btn-success" type="submit">Aceptar</button>
+                                <button data-toggle="modal" class="btn btn-success" type="submit">Aceptar</button>
                                 <button id="cancelarP" class="btn btn-danger" type="reset">Cancelar</button>
                             </div>
                         </form>
@@ -141,7 +134,7 @@
         </div>
 
         <!-- Table -->
-        <div id="listaPost" class="box container">
+        <div id="listaPreferencias" class="box container">
             <%if (mensaje.length() > 0) {%>
             <div class="alert alert alert-success alert-dismissable">
                 <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
@@ -150,10 +143,10 @@
             <%}%>
             <div class="greybox col-xs-12">
 
-                <button id="addP" class="btn btn-warning icon fa-newspaper-o" type="submit"> Publica un Post</button>
+                <button id="botonAgregar" class="btn btn-warning icon fa-newspaper-o" type="submit"> Agregar preferencia</button>
 
                 <div class="col-md-12 section text-center">
-                    <h3>Listado de Post's</h3>
+                    <h3>Listado de preferencias</h3>
                     <table id="tablaPricipal" class="table table-bordered table-striped table-hover" cellspacing="0" width="100%">
                         <thead>
                             <tr>
@@ -161,7 +154,6 @@
                                 <th></th>
                             </tr>
                         </thead>
-
                         <tfoot>
                             <tr>
                                 <th>Descripción</th>
@@ -172,7 +164,6 @@
                         <tbody id="cuerpotablaPricipal"></tbody>
 
                     </table>
-
                 </div>
             </div>
         </div>
@@ -182,14 +173,16 @@
                 <div class="modal-content">
                     <div class="modal-header">
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                        <h4 class="modal-title">Datos de empresa</h4>
+                        <h4 class="modal-title">Datos de la preferencia</h4>
                     </div>
-                    <form id="enviar" method="post" action="<%=context%>/ServletPost?opcion=4">                        
+                    <form method="post" action="<%=context%>/ServletPreferencias">
                         <div class="modal-body text-center form-inline">
-                            <!-- contenido tabla consulta --> 
+                            <!-- contenido tabla consulta -->
                             <div class="input-group">
                                 <span class="input-group-addon"><span class="glyphicon glyphicon-user"></span></span>
-                                <input id="descripcion" name="descripcion" type="text" required class="form-control">                                        
+                                <input name="opcion" type="hidden" value="2">
+                                <input id="id" name="id" type="hidden">
+                                <input id="descripcion" name="descripcion" type="text" required class="form-control">
                             </div>
                             <br><br>
                         </div>
@@ -201,7 +194,6 @@
                 </div>
             </div>
         </div>
-
 
         <!-- footer -->
         <%@include file="footer.jsp" %>
