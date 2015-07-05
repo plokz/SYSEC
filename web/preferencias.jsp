@@ -5,8 +5,7 @@
 --%>
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
-<%
-    String mensaje = (String) request.getAttribute("mensaje") != null ? (String) request.getAttribute("mensaje") : "";
+<%    String mensaje = (String) request.getAttribute("mensaje") != null ? (String) request.getAttribute("mensaje") : "";
 %>
 <!DOCTYPE html>
 <html>
@@ -41,16 +40,16 @@
         <script src="<%=context%>/js/jquery.dataTables.min.js"></script>
         <script src="<%=context%>/js/dataTables.bootstrap.js"></script>
         <script>
-            $(function () {
+            $(function() {
                 obtenerPreferencias();
 
-                $('#botonAgregar').click(function () {
+                $('#botonAgregar').click(function() {
                     $('#agregarPreferencia').fadeIn();
                     $('#botonAgregar').hide();
                     $('#listaPreferencias').hide();
                 });
 
-                $('#cancelarP').click(function () {
+                $('#cancelarP').click(function() {
                     $('#agregarPreferencia').hide();
                     $('#botonAgregar').fadeIn();
                     $('#listaPreferencias').fadeIn();
@@ -64,25 +63,23 @@
                 $.ajax({
                     url: context + '/ServletPreferencias',
                     type: 'POST',
-                    success: function (data) {
+                    success: function(data) {
                         var tableBody = "<tbody id='cuerpotablaPricipal'>";
 
                         for (var i in data) {
                             tableBody += "<tr><td>" + data[i].preferencia.toUpperCase() + "</td>"
-                            tableBody += "<td><a data-toggle='modal' data-id=" + data[i].idPreferencias + " title='Actualizar' class='open-Modal btn btn-primary glyphicon glyphicon-search' data-target='#ActualizarInfo'></a></td>"
+                                    + "<td><a data-toggle='modal' data-id=" + data[i].idPreferencias + " title='Actualizar' class='open-Modal btn btn-primary glyphicon glyphicon-search' data-target='#ActualizarInfo'></a></td></tr>";
                         }
-
-                        tableBody += '</tbody>'
-                        $('#tablaPricipal').append(tableBody);
+                        $('#tablaPricipal').append(tableBody + '</tbody>');
                         $('#tablaPricipal').dataTable();
                     },
-                    error: function () {
+                    error: function() {
                         alert("Error de conexión");
                     }
                 });
             }
 
-            $(document).on("click", ".open-Modal", function () {
+            $(document).on("click", ".open-Modal", function() {
                 var context = $('#contexto').val();
                 var id = $(this).data('id');
 
@@ -93,11 +90,11 @@
                         "opcion": 1,
                         "id": id
                     },
-                    success: function (data) {
+                    success: function(data) {
                         $('#id').val(data.idPreferencias);
                         $('#descripcion').val(data.preferencia.toUpperCase());
                     },
-                    error: function () {
+                    error: function() {
                         alert("Error de conexión");
                     }
                 });
@@ -106,7 +103,7 @@
     </head>
     <body>
         <!-- header -->
-        <%@include file="headerUsuario.jsp" %>
+        <%@include file="headerAdministrador.jsp" %>
         <input type="hidden" name="contexto" id="contexto" value="<%=context%>"/>
 
         <!-- Banner -->

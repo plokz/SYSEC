@@ -35,7 +35,7 @@
                 <li>
                     <a class="icon fa-folder-open" href=""> Opciones usuario</a>
                     <ul>
-                        <li><a class="icon fa-circle-o" href="#"> opcion 1</a></li>
+                        <li><a class="icon fa-circle-o" href="#"> Modificar Información</a></li>
 
                         <li><a class="icon fa-circle-o" href="#"> opcion 2</a></li>
 

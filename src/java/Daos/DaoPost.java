@@ -6,6 +6,7 @@
 package Daos;
 
 import Beans.PostBean;
+import Beans.UsuariosBean;
 import Utilerias.Conexion;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -41,7 +42,7 @@ public class DaoPost {
         return resultado;
     }
 
-    public List consultaPost() {
+    public List consultaPost(int idRegistroUsuario) {
         //Lista para retornar los beans con los registros
         List listPost = new ArrayList();
         PostBean postb;
@@ -49,7 +50,7 @@ public class DaoPost {
             //Se establece la conexion
             Connection conexion = Conexion.getConnection();
             //Se prepara la sentencia SQL
-            PreparedStatement ps = conexion.prepareStatement("SELECT * FROM post;");
+            PreparedStatement ps = conexion.prepareStatement("SELECT * FROM post where usuariospPFK != " + idRegistroUsuario + ";");
             //Se ejecuta la sentencia SQL
             ResultSet rs = ps.executeQuery();
             //Manipular los datos obtenidos de la consulta (ResultSet)
@@ -73,9 +74,42 @@ public class DaoPost {
         return listPost;
     }
 
-    public List consultaUser(int buscarId) {
+    public List consultaPostHechos(int idRegistroUsuario) {
+        //Lista para retornar los beans con los registros
+        List listPost = new ArrayList();
+        PostBean postb;
+        try {
+            //Se establece la conexion
+            Connection conexion = Conexion.getConnection();
+            //Se prepara la sentencia SQL
+            PreparedStatement ps = conexion.prepareStatement("SELECT * FROM post where usuariospPFK = " + idRegistroUsuario + ";");
+            //Se ejecuta la sentencia SQL
+            ResultSet rs = ps.executeQuery();
+            //Manipular los datos obtenidos de la consulta (ResultSet)
+            while (rs.next()) {
+                postb = new PostBean();
+                //Asignar el contenido del ResultSet a cada atributo del bean
+                postb.setIdPost(rs.getInt(1));
+                postb.setNombrePublicacion(rs.getString(2));
+                postb.setPresupuesto(rs.getString(3));
+                postb.setDescripcion(rs.getString(4));
+                postb.setIdUserFK(rs.getInt(5));
+                listPost.add(postb);
+            }
+            //Cerramos el resultset, preparestatement y la conexion
+            rs.close();
+            ps.close();
+            conexion.close();
+        } catch (SQLException sqle) {
+            System.err.println("Error en la consulta");
+        }
+        return listPost;
+    }
+
+    public UsuariosBean consultaUser(int buscarId) {
         //Lista para retornar los beans con los registros
         List listUSer = new ArrayList();
+        UsuariosBean bean = new UsuariosBean();
         try {
             //Se establece la conexion
             Connection conexion = Conexion.getConnection();
@@ -86,16 +120,14 @@ public class DaoPost {
             //Manipular los datos obtenidos de la consulta (ResultSet)
             while (rs.next()) {
                 //Asignar el contenido del ResultSet a cada atributo del bean
-                listUSer.add(rs.getInt(1));
-                listUSer.add(rs.getString(2));
-                listUSer.add(rs.getString(3));
-                listUSer.add(rs.getString(4));
-                listUSer.add(rs.getString(5));
-                listUSer.add(rs.getString(6));
-                listUSer.add(rs.getString(7));
-                listUSer.add(rs.getString(8));
-                listUSer.add(rs.getInt(9));
-                listUSer.add(rs.getInt(10));
+                bean.setIdUsuario(rs.getInt(1));
+                bean.setNombre(rs.getString(2));
+                bean.setRfc(rs.getString(3));
+                bean.setColonia(rs.getString(4));
+                bean.setCP(rs.getString(5));
+                bean.setEmail(rs.getString(6));
+                bean.setUsuario(rs.getString(7));
+                bean.setPassword(rs.getString(8));
             }
             //Cerramos el resultset, preparestatement y la conexion
             rs.close();
@@ -104,6 +136,24 @@ public class DaoPost {
         } catch (SQLException sqle) {
             System.err.println("Error en la consulta");
         }
-        return listUSer;
+        return bean;
+    }
+
+    public boolean eliminarPost(int idPost) throws SQLException {
+        String query = "DELETE FROM post WHERE idPost = ?";
+        boolean status = false;
+
+        try {
+            Connection conexion = Conexion.getConnection();
+            PreparedStatement prepareStatement = conexion.prepareStatement(query);
+            prepareStatement.setInt(1, idPost);
+
+            status = prepareStatement.execute();
+        } catch (SQLException ex) {
+            System.out.println("DaoAsignatura.aliminar()");
+            System.out.println(ex);
+        }
+
+        return status;
     }
 }

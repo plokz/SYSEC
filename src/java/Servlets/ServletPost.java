@@ -6,12 +6,16 @@
 package Servlets;
 
 import Beans.PostBean;
+import Beans.UsuariosBean;
 import Daos.DaoPost;
 import Utilerias.javaMail;
 import com.google.gson.Gson;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.sql.SQLException;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -34,7 +38,7 @@ public class ServletPost extends HttpServlet {
      * @throws IOException if an I/O error occurs
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
+            throws ServletException, IOException, SQLException {
         response.setContentType("text/html;charset=UTF-8");
         PrintWriter out = response.getWriter();
         try {
@@ -46,31 +50,23 @@ public class ServletPost extends HttpServlet {
             String JSON = "";
             DaoPost dao = new DaoPost();
             PostBean bean = new PostBean();
+            UsuariosBean usu = new UsuariosBean();
 
             switch (opcion) {
                 case 1:
-                    ListPost = dao.consultaPost();
+                    int idRegistroUsuario = Integer.parseInt(session.getAttribute("idU").toString());
+                    ListPost = dao.consultaPost(idRegistroUsuario);
                     JSON = "{\"parametros\": " + gson.toJson(ListPost) + "}";
                     out.print(JSON);
                     break;
                 case 2:
                     int buscarId = Integer.parseInt(request.getParameter("buscarId"));
-                    listaPerso = dao.consultaUser(buscarId);
-                    JSON = "{\"parametros\": [{\"idUsuarios\": " + gson.toJson(listaPerso.get(0))
-                            + ",\"Nombre\":" + gson.toJson(listaPerso.get(1))
-                            + ",\"RFC\":" + gson.toJson(listaPerso.get(2))
-                            + ",\"Colonia\":" + gson.toJson(listaPerso.get(3))
-                            + ",\"CP\":" + gson.toJson(listaPerso.get(4))
-                            + ",\"Email\":" + gson.toJson(listaPerso.get(5))
-                            + ",\"Usuario\":" + gson.toJson(listaPerso.get(6))
-                            + ",\"Password\":" + gson.toJson(listaPerso.get(7))
-                            + ",\"Estado\":" + gson.toJson(listaPerso.get(8))
-                            + ",\"Tipo\":" + gson.toJson(listaPerso.get(9))
-                            + "}]}";
+                    usu = dao.consultaUser(buscarId);
+                    JSON = "{\"parametros\": [" + gson.toJson(usu) + "]}";
                     out.print(JSON);
                     break;
                 case 3:
-                    int idRegistroUsuario = Integer.parseInt(session.getAttribute("idU").toString());
+                    idRegistroUsuario = Integer.parseInt(session.getAttribute("idU").toString());
                     String nombrePost = request.getParameter("nombrePost");
                     String presupuestoPost = request.getParameter("presupuestoPost");
                     String descripcionPost = request.getParameter("descripcionPost");
@@ -86,14 +82,27 @@ public class ServletPost extends HttpServlet {
                     break;
                 case 4:
                     javaMail correo = new javaMail();
-                    
+
                     String destino = request.getParameter("email");
                     String asunto = request.getParameter("nombre");
                     String mensaje = request.getParameter("mensaje");
-                    
+
                     correo.send("ploks.valora@gmail.com", asunto, mensaje);
-                    
+
                     request.setAttribute("texto", "El correo ha sido enviado");
+                    request.getRequestDispatcher("/principalUsuarios.jsp").forward(request, response);
+                    break;
+                case 5:
+                    idRegistroUsuario = Integer.parseInt(session.getAttribute("idU").toString());
+                    ListPost = dao.consultaPostHechos(idRegistroUsuario);
+                    JSON = "{\"parametros\": " + gson.toJson(ListPost) + "}";
+                    out.print(JSON);
+                    break;
+                case 6:
+                    int idpostBorrar = Integer.parseInt(request.getParameter("idpostBorrar"));
+                    dao.eliminarPost(idpostBorrar);
+                    
+                    request.setAttribute("texto", "El Post ha sido eliminado");
                     request.getRequestDispatcher("/principalUsuarios.jsp").forward(request, response);
                     break;
             }
@@ -114,7 +123,11 @@ public class ServletPost extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        processRequest(request, response);
+        try {
+            processRequest(request, response);
+        } catch (SQLException ex) {
+            Logger.getLogger(ServletPost.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
     /**
@@ -128,7 +141,11 @@ public class ServletPost extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        processRequest(request, response);
+        try {
+            processRequest(request, response);
+        } catch (SQLException ex) {
+            Logger.getLogger(ServletPost.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
     /**

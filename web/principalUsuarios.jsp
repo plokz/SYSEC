@@ -1,6 +1,5 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
-<%    
-    String mensaje = (String) request.getAttribute("texto") != null ? (String) request.getAttribute("texto") : "";
+<%    String mensaje = (String) request.getAttribute("texto") != null ? (String) request.getAttribute("texto") : "";
 %>
 <!DOCTYPE html>
 <html>
@@ -67,19 +66,51 @@
 
                     if (data.parametros.length > 0) {
 
-                        var cuerpoT = '<tbody id="cuerpotablaPricipal">'
+                        var cuerpoT = '<tbody id="cuerpotablaPricipal">';
                         for (BuscadorBean in data.parametros) {
 
                             cuerpoT += "<tr><td>" + data.parametros[BuscadorBean].nombrePublicacion.toUpperCase() + "</td>"
                                     + "<td>" + data.parametros[BuscadorBean].presupuesto.toUpperCase() + "</td>"
                                     + "<td>" + data.parametros[BuscadorBean].descripcion.toUpperCase() + "</td>"
-                                    + "<td><a data-toggle='modal' data-id=" + data.parametros[BuscadorBean].idUserFK + " title='Actualizar' class='open-Modal btn btn-primary glyphicon glyphicon-search' data-target='#ActualizarInfo'></a></td>"
+                                    + "<td><a data-toggle='modal' data-id=" + data.parametros[BuscadorBean].idUserFK + " title='Enviar mensaje' class='open-Modal btn btn-primary glyphicon glyphicon-search' data-target='#EnviarMensaje'></a></td></tr>"
                         }
                         $('#tablaPricipal').append(cuerpoT + "</tbody>");
                         $('#tablaPricipal').dataTable();
                     }
                 });
 
+                $.ajaxSetup({
+                    async: true
+                });
+            }
+
+            function obtenerPostHechos() {
+
+                $.ajaxSetup({
+                    async: false
+                });
+
+                var context = $('#contexto').val();
+
+                $.getJSON(context + '/ServletPost?opcion=5', function(data) {
+
+                    $('#cuerpotablaPricipalHechos').remove();
+
+                    if (data.parametros.length > 0) {
+
+                        var cuerpoT = '<tbody id="cuerpotablaPricipalHechos">';
+                        for (BuscadorBean in data.parametros) {
+
+                            cuerpoT += "<tr><td>" + data.parametros[BuscadorBean].nombrePublicacion.toUpperCase() + "</td>"
+                                    + "<td>" + data.parametros[BuscadorBean].presupuesto.toUpperCase() + "</td>"
+                                    + "<td>" + data.parametros[BuscadorBean].descripcion.toUpperCase() + "</td>"
+                                    + "<td><a data-toggle='modal' data-id=" + data.parametros[BuscadorBean].idPost + " title='Editar' class='open-Modal btn btn-primary glyphicon glyphicon-edit' data-target='#editarPost' onclick='editarPost(" + data.parametros[BuscadorBean].idPost + ")'></a></td>"
+                                    + "<td><a data-toggle='modal' data-id=" + data.parametros[BuscadorBean].idPost + " title='Eliminar' class='open-Modal btn btn-danger glyphicon glyphicon-erase' data-target='#eliminarPost' onclick='elminarPost(" + data.parametros[BuscadorBean].idPost + ")'></a></td></tr>";
+                        }
+                        $('#tablaPricipalHechos').append(cuerpoT + "</tbody>");
+                        $('#tablaPricipalHechos').dataTable();
+                    }
+                });
 
                 $.ajaxSetup({
                     async: true
@@ -98,18 +129,26 @@
 
                     if (data.parametros.length > 0) {
                         for (BuscadorBean in data.parametros) {
-                            $('#nombre').val(data.parametros[BuscadorBean].Nombre.toUpperCase());
-                            $('#email').val(data.parametros[BuscadorBean].Email.toUpperCase());
+                            $('#nombre').val(data.parametros[BuscadorBean].nombre.toUpperCase());
+                            $('#email').val(data.parametros[BuscadorBean].email.toUpperCase());
                         }
                     }
                 });
-
 
                 $.ajaxSetup({
                     async: true
                 });
 
             });
+
+            function elminarPost(idpostEliminar) {
+                $('#idpostBorrar').val(idpostEliminar);
+            }
+
+            function editarPost(idpostEditar) {
+                $('#idpostEditar').val(idpostEditar);
+//                $('#nombreEditar').val(nombrePost);
+            }
         </script>
     </head>
     <body>
@@ -147,9 +186,43 @@
                     </div>
                 </div>
             </div>
+
+            <!-- Table post echos-->
+            <div id="listaPostHechos" class="box container">
+                <div class="greybox col-xs-12">
+                    <div class="col-md-12 section text-center">
+                        <h3>Listado de Post's Hechos</h3>
+                        <table id="tablaPricipalHechos" class="table table-bordered table-striped table-hover" cellspacing="0" width="100%">
+                            <thead>
+                                <tr>
+                                    <th>Titulo</th>
+                                    <th>Presupuesto</th>
+                                    <th>Descripcion</th>
+                                    <th></th>
+                                    <th></th>
+                                </tr>
+                            </thead>
+
+                            <tfoot>
+                                <tr>
+                                    <th>Titulo</th>
+                                    <th>Presupuesto</th>
+                                    <th>Descripcion</th>
+                                    <th></th>
+                                    <th></th>
+                                </tr>
+                            </tfoot>
+
+                            <tbody id="cuerpotablaPricipalHechos"></tbody>
+
+                        </table>
+
+                    </div>
+                </div>
+            </div>
         </div>
 
-        <!-- Table -->
+        <!-- Table Post disponibles-->
         <div id="listaPost" class="box container">
             <%if (mensaje.length() > 0) {%>
             <div class="alert alert alert-success alert-dismissable">
@@ -159,7 +232,7 @@
             <%}%>
             <div class="greybox col-xs-12">
 
-                <button id="addP" class="btn btn-warning icon fa-newspaper-o" type="submit"> Publica un Post</button>
+                <button id="addP" class="btn btn-warning icon fa-newspaper-o" type="submit" onclick="obtenerPostHechos()"> Publica un Post</button>
 
                 <div class="col-md-12 section text-center">
                     <h3>Listado de Post's</h3>
@@ -190,7 +263,9 @@
             </div>
         </div>
 
-        <div id="ActualizarInfo" class="modal fade bs-example-modal-sm" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true">
+        <!-- Modal enviar mensaje -->
+
+        <div id="EnviarMensaje" class="modal fade bs-example-modal-sm" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true">
             <div class="modal-dialog modal-sm">
                 <div class="modal-content">
                     <div class="modal-header">
@@ -227,6 +302,48 @@
                 </div>
             </div>
         </div>
+
+        <!-- Modal eliminar post -->
+
+        <div id="eliminarPost" class="modal fade bs-example-modal-sm" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-sm">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                        <h4 class="modal-title">¿Deseas eliminar el post?</h4>
+                    </div>
+                    <form id="enviar" method="post" action="<%=context%>/ServletPost?opcion=6">  
+                        <input type="hidden" name="idpostBorrar" id="idpostBorrar"/>
+                        <div class="modal-footer">
+                            <button type="submit" class="btn btn-success">Aceptar</button>
+                            <button type="reset" class="btn btn-danger" data-dismiss="modal">Cancelar</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>     
+
+        <!-- Modal editar post -->
+
+        <div id="editarPost" class="modal fade bs-example-modal-sm" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-sm">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                        <h4 class="modal-title">Editar post</h4>
+                    </div>
+                    <form id="enviar" method="post" action="<%=context%>/ServletPost?opcion=7"> 
+                        <input type="text" name="idpostEditar" id="idpostEditar"/>
+                        <!--<input type="text" name="nombreEditar" id="nombreEditar"/>-->
+
+                        <div class="modal-footer">
+                            <button type="submit" class="btn btn-success">Aceptar</button>
+                            <button type="reset" class="btn btn-danger" data-dismiss="modal">Cancelar</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div> 
 
 
         <!-- footer -->
