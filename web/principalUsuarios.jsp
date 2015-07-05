@@ -37,6 +37,7 @@
             $(document).ready(function() {
 
                 obtenerPost();
+                obtenerPostHechos();
 
                 $('#addP').click(function() {
                     $('#agregarPost').fadeIn();
@@ -100,7 +101,6 @@
 
                         var cuerpoT = '<tbody id="cuerpotablaPricipalHechos">';
                         for (BuscadorBean in data.parametros) {
-
                             cuerpoT += "<tr><td>" + data.parametros[BuscadorBean].nombrePublicacion.toUpperCase() + "</td>"
                                     + "<td>" + data.parametros[BuscadorBean].presupuesto.toUpperCase() + "</td>"
                                     + "<td>" + data.parametros[BuscadorBean].descripcion.toUpperCase() + "</td>"
@@ -146,8 +146,27 @@
             }
 
             function editarPost(idpostEditar) {
-                $('#idpostEditar').val(idpostEditar);
-//                $('#nombreEditar').val(nombrePost);
+                var context = $('#contexto').val();
+                var id = idpostEditar;
+
+                $.ajax({
+                    url: context + '/ServletPost',
+                    type: 'POST',
+                    data: {
+                        "opcion": 7,
+                        "id": id
+                    },
+                    success: function(data) {
+                        alert(data);
+                        $('#idpostEditar').val(data.idPost);
+                        $('#nombrePublicacionEditar').val(data.nombrePublicacion);
+                        $('#presupuestoEditar').val(data.presupuesto);
+                        $('#descripcionEditar').val(data.descripcion);
+                    },
+                    error: function() {
+                        alert("Error de conexión");
+                    }
+                });
             }
         </script>
     </head>
@@ -232,7 +251,7 @@
             <%}%>
             <div class="greybox col-xs-12">
 
-                <button id="addP" class="btn btn-warning icon fa-newspaper-o" type="submit" onclick="obtenerPostHechos()"> Publica un Post</button>
+                <button id="addP" class="btn btn-warning icon fa-newspaper-o" type="submit"> Publica un Post</button>
 
                 <div class="col-md-12 section text-center">
                     <h3>Listado de Post's</h3>
@@ -332,10 +351,24 @@
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
                         <h4 class="modal-title">Editar post</h4>
                     </div>
-                    <form id="enviar" method="post" action="<%=context%>/ServletPost?opcion=7"> 
-                        <input type="text" name="idpostEditar" id="idpostEditar"/>
-                        <!--<input type="text" name="nombreEditar" id="nombreEditar"/>-->
-
+                    <form id="enviar" method="post" action="<%=context%>/ServletPost?opcion=8"> 
+                        <div class="modal-body">
+                            <input type="text" name="idpostEditar" id="idpostEditar"/>
+                            <div class="input-group">
+                                <span class="input-group-addon"><i class="glyphicon glyphicon-user"></i></span>
+                                <input id="nombrePublicacionEditar" name="nombrePublicacionEditar" type="text" class="form-control" placeholder="Titulo de Post">                                        
+                            </div>
+                            <br>
+                            <div class="input-group">
+                                <span class="input-group-addon"><i class="fa fa-money"></i></span>
+                                <input id="presupuestoEditar" name="presupuestoEditar" type="text" class="form-control" placeholder="Presupuesto">
+                            </div>
+                            <br>
+                            <div class="input-group">
+                                <span class="input-group-addon"><i class="glyphicon glyphicon-pencil"></i></span>
+                                <textarea id="descripcionEditar" name="descripcionEditar" class="form-control" required placeholder="Descripción"></textarea>
+                            </div>
+                        </div>
                         <div class="modal-footer">
                             <button type="submit" class="btn btn-success">Aceptar</button>
                             <button type="reset" class="btn btn-danger" data-dismiss="modal">Cancelar</button>

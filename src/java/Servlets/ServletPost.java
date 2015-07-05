@@ -101,9 +101,15 @@ public class ServletPost extends HttpServlet {
                 case 6:
                     int idpostBorrar = Integer.parseInt(request.getParameter("idpostBorrar"));
                     dao.eliminarPost(idpostBorrar);
-                    
+
                     request.setAttribute("texto", "El Post ha sido eliminado");
                     request.getRequestDispatcher("/principalUsuarios.jsp").forward(request, response);
+                    break;
+                case 7:
+                    int id = Integer.parseInt(request.getParameter("id"));
+                    PostBean postbean = dao.consultarDatosPost(id);
+                    System.out.println(""+gson.toJson(postbean));
+                    out.println(gson.toJson(postbean));
                     break;
             }
         } finally {

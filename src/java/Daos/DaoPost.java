@@ -145,15 +145,44 @@ public class DaoPost {
 
         try {
             Connection conexion = Conexion.getConnection();
-            PreparedStatement prepareStatement = conexion.prepareStatement(query);
-            prepareStatement.setInt(1, idPost);
+            PreparedStatement ps = conexion.prepareStatement(query);
+            ps.setInt(1, idPost);
 
-            status = prepareStatement.execute();
+            status = ps.execute();
+            ps.close();
+            conexion.close();
         } catch (SQLException ex) {
-            System.out.println("DaoAsignatura.aliminar()");
+            System.out.println("DaoPost.EliminarPost()");
             System.out.println(ex);
         }
 
         return status;
+    }
+
+    public PostBean consultarDatosPost(int id) {
+        String query = "SELECT * FROM post WHERE idPost = ?";
+        PostBean beanPost = null;
+        try {
+            Connection conexion = Conexion.getConnection();
+            PreparedStatement ps = conexion.prepareStatement(query);
+            ps.setInt(1, id);
+            ResultSet resultSet = ps.executeQuery();
+
+            if (resultSet.next()) {
+                beanPost = new PostBean();
+                beanPost.setIdPost(resultSet.getInt("idPost"));
+                beanPost.setNombrePublicacion(resultSet.getString("nombrePublicacion"));
+                beanPost.setPresupuesto(resultSet.getString("presupuesto"));
+                beanPost.setDescripcion(resultSet.getString("descripcion"));
+                beanPost.setIdUserFK(resultSet.getInt("usuariospPFK"));
+
+            }
+            ps.close();
+            conexion.close();
+        } catch (SQLException ex) {
+            System.out.println("DaoPost.ConsultarPost(int id)");
+            System.out.println(ex);
+        }
+        return beanPost;
     }
 }

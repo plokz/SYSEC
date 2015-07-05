@@ -65,18 +65,21 @@ public class DaoPreferencias {
         PreferenciasBean preferencia = null;
 
         try {
-            Connection connection = Conexion.getConnection();
-            PreparedStatement prepareStatement = connection.prepareStatement(query);
+            Connection conexion = Conexion.getConnection();
+            PreparedStatement ps = conexion.prepareStatement(query);
 
-            prepareStatement.setInt(1, id);
+            ps.setInt(1, id);
 
-            ResultSet resultSet = prepareStatement.executeQuery();
+            ResultSet rs = ps.executeQuery();
 
-            if (resultSet.next()) {
+            if (rs.next()) {
                 preferencia = new PreferenciasBean();
-                preferencia.setIdPreferencias(resultSet.getInt("idPreferencias"));
-                preferencia.setPreferencia(resultSet.getString("preferencia"));
+                preferencia.setIdPreferencias(rs.getInt("idPreferencias"));
+                preferencia.setPreferencia(rs.getString("preferencia"));
             }
+            rs.close();
+            ps.close();
+            conexion.close();
         } catch (SQLException ex) {
             System.out.println("DaoPreferencias.consultar(int id)");
             System.out.println(ex);
@@ -102,6 +105,9 @@ public class DaoPreferencias {
 
                 preferencias.add(preferencia);
             }
+            resultSet.close();
+            prepareStatement.close();
+            connection.close();
         } catch (SQLException ex) {
             System.out.println("DaoPreferencias.consultar(int id)");
             System.out.println(ex);
