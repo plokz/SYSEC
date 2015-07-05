@@ -16,6 +16,10 @@
         <servlet-name>ServletPost</servlet-name>
         <servlet-class>Servlets.ServletPost</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>ServletPreferencias</servlet-name>
+        <servlet-class>Servlets.ServletPreferencias</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>ServletLogin</servlet-name>
         <url-pattern>/ServletLogin</url-pattern>
@@ -31,6 +35,10 @@
     <servlet-mapping>
         <servlet-name>ServletPost</servlet-name>
         <url-pattern>/ServletPost</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ServletPreferencias</servlet-name>
+        <url-pattern>/ServletPreferencias</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>

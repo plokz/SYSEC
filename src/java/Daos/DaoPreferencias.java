@@ -1,11 +1,13 @@
 package Daos;
 
+import java.util.List;
 import Beans.PreferenciasBean;
 import Utilerias.Conexion;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 
 /**
  *
@@ -59,7 +61,7 @@ public class DaoPreferencias {
     }
 
     public PreferenciasBean consultar(int id) {
-        String query = "SELECT preferencia FROM preferencias WHERE idPreferencias = ?";
+        String query = "SELECT idPreferencias, preferencia FROM preferencias WHERE idPreferencias = ?";
         PreferenciasBean preferencia = null;
 
         try {
@@ -72,6 +74,7 @@ public class DaoPreferencias {
 
             if (resultSet.next()) {
                 preferencia = new PreferenciasBean();
+                preferencia.setIdPreferencias(resultSet.getInt("idPreferencias"));
                 preferencia.setPreferencia(resultSet.getString("preferencia"));
             }
         } catch (SQLException ex) {
@@ -80,5 +83,30 @@ public class DaoPreferencias {
         }
 
         return preferencia;
+    }
+
+    public List<PreferenciasBean> consultar() {
+        String query = "SELECT idPreferencias, preferencia FROM preferencias";
+        List<PreferenciasBean> preferencias = new ArrayList<PreferenciasBean>();
+
+        try {
+            Connection connection = Conexion.getConnection();
+            PreparedStatement prepareStatement = connection.prepareStatement(query);
+
+            ResultSet resultSet = prepareStatement.executeQuery();
+
+            while (resultSet.next()) {
+                PreferenciasBean preferencia = new PreferenciasBean();
+                preferencia.setIdPreferencias(resultSet.getInt("idPreferencias"));
+                preferencia.setPreferencia(resultSet.getString("preferencia"));
+
+                preferencias.add(preferencia);
+            }
+        } catch (SQLException ex) {
+            System.out.println("DaoPreferencias.consultar(int id)");
+            System.out.println(ex);
+        }
+
+        return preferencias;
     }
 }
