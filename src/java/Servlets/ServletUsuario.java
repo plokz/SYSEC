@@ -86,11 +86,10 @@ public class ServletUsuario extends HttpServlet {
 
                     try {
                         valuesCheck = request.getParameterValues("checkbox");
-                        if (valuesCheck.length > 0) {
-                            daoPre.actualizarDatos(usu, valuesCheck);
-                        }
                     } catch (Exception e) {
+                        System.out.println(e);
                     }
+                    daoPre.actualizarDatos(usu, valuesCheck);
 
                     request.setAttribute("texto", "El registro se completo");
                     request.getRequestDispatcher("/modificarInfoUser.jsp").forward(request, response);

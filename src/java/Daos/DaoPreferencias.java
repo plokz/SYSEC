@@ -154,7 +154,7 @@ public class DaoPreferencias {
             ps.setInt(9, bean.getIdUsuario());
             
             status = ps.execute();
-            if (valuesChecks.length > 0) {
+            if (valuesChecks != null) {
                 String sqlAltaPreferencia = "insert into tienepreferencia values (null,?,?);";
 
                 DaoLogin login = new DaoLogin();

@@ -38,7 +38,7 @@ public class ServletPreferencias extends HttpServlet {
 
                 case 2:  // Modificacion de una preferencia con base en su id
                     id = Integer.parseInt(request.getParameter("id"));
-                    String descripcion = request.getParameter("descripcion");
+                    String descripcion = new String(request.getParameter("descripcion").getBytes("ISO8859-1"), "UTF-8");
 
                     daoPreferencias.modificar(id, descripcion);
 
@@ -47,7 +47,7 @@ public class ServletPreferencias extends HttpServlet {
                     break;
 
                 case 3:  // Agregar una preferencia
-                    descripcion = request.getParameter("descripcion");
+                    descripcion = new String(request.getParameter("descripcion").getBytes("ISO8859-1"), "UTF-8");
 
                     daoPreferencias.agregar(descripcion);
 
