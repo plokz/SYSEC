@@ -2,6 +2,7 @@ package Daos;
 
 import java.util.List;
 import Beans.PreferenciasBean;
+import Beans.UsuariosBean;
 import Utilerias.Conexion;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -115,4 +116,69 @@ public class DaoPreferencias {
 
         return preferencias;
     }
+
+    public boolean eliminarPreferencias(int id) {
+        String query = "DELETE FROM tienepreferencia WHERE usuariosTPFK = ?;";
+        boolean status = false;
+
+        try {
+            Connection connection = Conexion.getConnection();
+            PreparedStatement prepareStatement = connection.prepareStatement(query);
+            prepareStatement.setInt(1, id);
+
+            status = prepareStatement.execute();
+            prepareStatement.close();
+            connection.close();
+        } catch (SQLException ex) {
+            System.out.println("DaoPreferencias.eliminar()");
+            System.out.println(ex);
+        }
+
+        return status;
+    }
+
+    public boolean actualizarDatos(UsuariosBean bean, String[] valuesChecks) {
+        String query = "UPDATE usuarios SET nombre= ?, rfc= ?, colonia= ?, cp= ?, email= ?, usuario= ?, password= ?, estado= ?  WHERE idUsuarios= ?";
+        boolean status = false;
+        try {
+            Connection conexion = Conexion.getConnection();
+            PreparedStatement ps = conexion.prepareStatement(query);
+            ps.setString(1, bean.getNombre());
+            ps.setString(2, bean.getRfc());
+            ps.setString(3, bean.getColonia());
+            ps.setString(4, bean.getCP());
+            ps.setString(5, bean.getEmail());
+            ps.setString(6, bean.getUsuario());
+            ps.setString(7, bean.getPassword());
+            ps.setInt(8, bean.getEstadoBean().getIdEstado());
+            ps.setInt(9, bean.getIdUsuario());
+            
+            status = ps.execute();
+            if (valuesChecks.length > 0) {
+                String sqlAltaPreferencia = "insert into tienepreferencia values (null,?,?);";
+
+                DaoLogin login = new DaoLogin();
+                bean = login.consultarUsuario(bean.getUsuario(), bean.getPassword());
+                int idUsuarioReg = bean.getIdUsuario();
+
+                for (String value : valuesChecks) {
+                    ps = (PreparedStatement) conexion.prepareStatement(sqlAltaPreferencia);
+                    int idpref = (Integer.parseInt(value));
+
+                    ps.setInt(1, idpref);
+                    ps.setInt(2, idUsuarioReg);
+                    ps.executeUpdate();
+                }
+            }
+
+            conexion.close();
+            ps.close();
+        } catch (SQLException ex) {
+            System.out.println("DaoAsignatura.actualizar");
+            System.out.println(ex);
+        }
+
+        return status;
+    }
+
 }

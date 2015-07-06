@@ -122,14 +122,12 @@ public class DaoRegistro {
             ps.setInt(9, bean.getTipoBean().getIdTipo());
             resultado = ps.executeUpdate();
 
-            System.out.println("Tamaño array" + valuesChecks.length);
             if (valuesChecks.length > 0) {
                 String sqlAltaPreferencia = "insert into tienepreferencia values (null,?,?);";
 
                 DaoLogin login = new DaoLogin();
                 bean = login.consultarUsuario(bean.getUsuario(), bean.getPassword());
                 int idUsuarioReg = bean.getIdUsuario();
-                System.out.println("ID USUARIO REG" + idUsuarioReg);
 
                 for (String value : valuesChecks) {
                     ps = (PreparedStatement) conexion.prepareStatement(sqlAltaPreferencia);

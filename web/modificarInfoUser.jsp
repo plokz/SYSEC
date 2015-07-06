@@ -105,12 +105,10 @@
                     for (BuscadorBean in data.parametros) {
                         if (data.parametros[BuscadorBean].estado === "false") {
                             $('#user').val(data.parametros[BuscadorBean].usuarioCreado);
-                            $("#password").removeAttr("disabled");
-                            $("#registro").removeAttr("disabled");
+                            $("#password").removeAttr("readonly");
                         } else {
                             $('#user').val("");
-                            $("#password").attr("disabled", "disabled");
-                            $("#registro").attr("disabled", "disabled");
+                            $("#password").attr("readonly", "readonly");
                             alert("El correo ya esta en uso");
                         }
                     }
@@ -186,7 +184,7 @@
 
                                 <div class="input-group col-sm-5">
                                     <span class="input-group-addon"><i class="glyphicon glyphicon-lock"></i></span>
-                                    <input id="password" name="password" type="password" class="form-control" placeholder="Contraseña" disabled required>
+                                    <input id="password" name="password" type="password" class="form-control" placeholder="Contraseña" readonly="" required>
                                 </div>
                             </div>
                             <br>
@@ -195,7 +193,7 @@
                             <div class="form-horizontal">
                                 <!-- Button --> 
                                 <div class="col-sm-6 controls">
-                                    <button id="registro" name="registro" disabled type="submit" class="btn btn-success pull-right">
+                                    <button id="registro" name="registro" type="submit" class="btn btn-success pull-right">
                                         Aceptar
                                     </button>                          
                                 </div>

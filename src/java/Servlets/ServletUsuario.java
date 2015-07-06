@@ -8,6 +8,7 @@ package Servlets;
 import Beans.TipoBean;
 import Beans.UsuariosBean;
 import Daos.DaoLogin;
+import Daos.DaoPreferencias;
 import Daos.DaoRegistro;
 import com.google.gson.Gson;
 import java.io.IOException;
@@ -45,13 +46,14 @@ public class ServletUsuario extends HttpServlet {
             HttpSession session = request.getSession();
             String JSON = "";
             UsuariosBean usu = new UsuariosBean();
-            DaoLogin dao = new DaoLogin();
-            DaoRegistro daoR = new DaoRegistro();
+            DaoLogin daoLog = new DaoLogin();
+            DaoRegistro daoReg = new DaoRegistro();
+            DaoPreferencias daoPre = new DaoPreferencias();
             int idRegistroUsuario = Integer.parseInt(session.getAttribute("idU").toString());
-            
+
             switch (opcion) {
                 case 1:
-                    usu = dao.consultarDatosUsuario(idRegistroUsuario);
+                    usu = daoLog.consultarDatosUsuario(idRegistroUsuario);
                     JSON = gson.toJson(usu);
                     out.print(JSON);
                     break;
@@ -59,7 +61,7 @@ public class ServletUsuario extends HttpServlet {
                     TipoBean beantipo = new TipoBean();
                     beantipo.setIdTipo(2);
                     String[] valuesCheck = null;
-                    
+
                     String email = request.getParameter("email");
                     String user = request.getParameter("user");
                     String estado = new String(request.getParameter("estado").getBytes("ISO8859-1"), "UTF-8");
@@ -68,7 +70,7 @@ public class ServletUsuario extends HttpServlet {
                     String colonia = new String(request.getParameter("colonia").getBytes("ISO8859-1"), "UTF-8");
                     String password = request.getParameter("password");
                     String RFC = request.getParameter("RFC");
-                    
+
                     usu.setIdUsuario(idRegistroUsuario);
                     usu.setNombre(nombre);
                     usu.setRfc(RFC);
@@ -78,21 +80,19 @@ public class ServletUsuario extends HttpServlet {
                     usu.setUsuario(user);
                     usu.setPassword(password);
                     usu.setTipoBean(beantipo);
-                    usu.setEstadoBean(daoR.consultaridEstado(estado));
-                    
+                    usu.setEstadoBean(daoReg.consultaridEstado(estado));
+
+                    daoPre.eliminarPreferencias(idRegistroUsuario);
+
                     try {
                         valuesCheck = request.getParameterValues("checkbox");
-                        //borro todo y luego inserto de nuevo en tiene preferencias
-                        //update en usuario
-                        //dao.altaUsuario(usu, valuesCheck);
+                        daoPre.actualizarDatos(usu, valuesCheck);
                     } catch (Exception e) {
-                        //borro todo y luego inserto de nuevo en tiene preferencias
-                        //update en usuario
-                        //dao.altaUsuario(usu, valuesCheck);
+                        daoPre.actualizarDatos(usu, valuesCheck);
                     }
-                    
+
                     request.setAttribute("texto", "El registro se completo");
-                    request.getRequestDispatcher("/index.jsp").forward(request, response);
+                    request.getRequestDispatcher("/modificarInfoUser.jsp").forward(request, response);
                     break;
             }
         } finally {
