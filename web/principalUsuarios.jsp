@@ -69,11 +69,11 @@
 
                         var cuerpoT = '<tbody id="cuerpotablaPricipal">';
                         for (BuscadorBean in data.parametros) {
-
                             cuerpoT += "<tr><td>" + data.parametros[BuscadorBean].nombrePublicacion.toUpperCase() + "</td>"
                                     + "<td>" + data.parametros[BuscadorBean].presupuesto.toUpperCase() + "</td>"
                                     + "<td>" + data.parametros[BuscadorBean].descripcion.toUpperCase() + "</td>"
-                                    + "<td><a data-toggle='modal' data-id=" + data.parametros[BuscadorBean].idUserFK + " title='Enviar mensaje' class='open-Modal btn btn-primary glyphicon glyphicon-search' data-target='#EnviarMensaje'></a></td></tr>"
+                                    + "<td><a data-toggle='modal' data-id=" + data.parametros[BuscadorBean].idUserFK + " title='Enviar mensaje' class='open-Modal btn btn-success icon fa-comments-o' data-target='#EnviarMensaje'></a></td>"
+                                    + "<td><a data-toggle='modal' data-id=" + data.parametros[BuscadorBean].idUserFK + " title='Enviar correo' class='open-Modal btn btn-primary glyphicon glyphicon-envelope' data-target='#EnviarCorreo'></a></td></tr>"
                         }
                         $('#tablaPricipal').append(cuerpoT + "</tbody>");
                         $('#tablaPricipal').dataTable();
@@ -118,19 +118,22 @@
             }
 
             $(document).on("click", ".open-Modal", function() {
-                var cadena = $(this).data('id');
+                var idBusq = $(this).data('id');
 
                 $.ajaxSetup({
                     async: false
                 });
 
                 var context = $('#contexto').val();
-                $.getJSON(context + '/ServletPost?opcion=2&buscarId=' + cadena, function(data) {
+                $.getJSON(context + '/ServletPost?opcion=2&buscarId=' + idBusq, function(data) {
 
                     if (data.parametros.length > 0) {
                         for (BuscadorBean in data.parametros) {
                             $('#nombre').val(data.parametros[BuscadorBean].nombre.toUpperCase());
                             $('#email').val(data.parametros[BuscadorBean].email.toUpperCase());
+
+                            $('#idUsermensaje').val(data.parametros[BuscadorBean].idUsuario);
+                            $('#nombremensaje').val(data.parametros[BuscadorBean].nombre.toUpperCase());
                         }
                     }
                 });
@@ -261,6 +264,7 @@
                                 <th>Presupuesto</th>
                                 <th>Descripcion</th>
                                 <th></th>
+                                <th></th>
                             </tr>
                         </thead>
 
@@ -269,6 +273,7 @@
                                 <th>Titulo</th>
                                 <th>Presupuesto</th>
                                 <th>Descripcion</th>
+                                <th></th>
                                 <th></th>
                             </tr>
                         </tfoot>
@@ -281,14 +286,14 @@
             </div>
         </div>
 
-        <!-- Modal enviar mensaje -->
+        <!-- Modal enviar Correo -->
 
-        <div id="EnviarMensaje" class="modal fade bs-example-modal-sm" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true">
+        <div id="EnviarCorreo" class="modal fade bs-example-modal-sm" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true">
             <div class="modal-dialog modal-sm">
                 <div class="modal-content">
                     <div class="modal-header">
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                        <h4 class="modal-title">Datos de empresa</h4>
+                        <h4 class="modal-title">Enviar Correo</h4>
                     </div>
                     <form id="enviar" method="post" action="<%=context%>/ServletPost?opcion=4">                        
                         <div class="modal-body text-center form-inline">
@@ -301,13 +306,55 @@
 
                             <div class="input-group">
                                 <span class="input-group-addon"><span class="glyphicon glyphicon-envelope"></span></span>
-                                <input type="text"  name="email" id="email" class="form-control" readonly="">
+                                <input type="text"  name="email" id="email" required class="form-control" readonly="">
                             </div>
                             <br><br>
 
                             <div class="input-group  col-md-11">
                                 <span class="input-group-addon"><span class="icon fa-pencil-square-o"></span></span>
-                                <textarea name="mensaje" id="mensaje" class="form-control" placeholder="Mensaje"></textarea>
+                                <textarea name="mensaje" id="mensaje" class="form-control" required placeholder="Mensaje"></textarea>
+                            </div>
+                            <br><br>
+
+                        </div>
+                        <div class="modal-footer">
+                            <button type="submit" class="btn btn-success">Enviar</button>
+                            <button type="reset" class="btn btn-danger" data-dismiss="modal">Cerrar</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <!-- Modal enviar Mensaje -->
+
+        <div id="EnviarMensaje" class="modal fade bs-example-modal-sm" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-sm">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                        <h4 class="modal-title">Enviar Mensaje</h4>
+                    </div>
+                    <form id="enviar" method="post" action="<%=context%>/ServletPost?opcion=9">                        
+                        <div class="modal-body text-center form-inline">
+                            <!-- contenido tabla consulta --> 
+                            <input id="idUsermensaje" name="idUsermensaje" type="hidden" required>                                        
+
+                            <div class="input-group">
+                                <span class="input-group-addon"><span class="glyphicon glyphicon-user"></span></span>
+                                <input id="nombremensaje" name="nombremensaje" type="text" required class="form-control" readonly="">                                        
+                            </div>
+                            <br><br>
+
+                            <div class="input-group">
+                                <span class="input-group-addon"><span class="icon fa-question-circle"></span></span>
+                                <input type="text"  name="asuntomensaje" id="asuntomensaje" required class="form-control" placeholder="Asunto">
+                            </div>
+                            <br><br>
+
+                            <div class="input-group  col-md-11">
+                                <span class="input-group-addon"><span class="icon fa-pencil-square-o"></span></span>
+                                <textarea name="mensajemensaje" id="mensajemensaje" required class="form-control" placeholder="Mensaje"></textarea>
                             </div>
                             <br><br>
 

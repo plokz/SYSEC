@@ -5,6 +5,7 @@
  */
 package Daos;
 
+import Beans.MensajesBean;
 import Beans.PostBean;
 import Beans.UsuariosBean;
 import Utilerias.Conexion;
@@ -185,7 +186,7 @@ public class DaoPost {
         }
         return beanPost;
     }
-    
+
     public boolean modificarPost(PostBean bean) {
         String query = "UPDATE post SET nombrePublicacion = ?, presupuesto = ?, descripcion = ? WHERE idPost = ?";
         boolean status = false;
@@ -209,5 +210,27 @@ public class DaoPost {
         }
 
         return status;
+    }
+
+    public int crearMensaje(MensajesBean bean) {
+        int resultado = 0;
+        String sqlMensaje = "INSERT INTO tienemensajes values (null,?,?,?,?,?);";
+        PreparedStatement ps = null;
+        try {
+            Connection conexion = Conexion.getConnection();
+            ps = (PreparedStatement) conexion.prepareStatement(sqlMensaje);
+            ps.setInt(1, bean.getIdUsuario());
+            ps.setInt(2, bean.getIdRemitente());
+            ps.setString(3, bean.getAsunto());
+            ps.setString(4, bean.getMensaje());
+            ps.setBoolean(5, bean.getEstado());
+
+            resultado = ps.executeUpdate();
+            conexion.close();
+            ps.close();
+        } catch (SQLException sql) {
+            sql.printStackTrace();
+        }
+        return resultado;
     }
 }

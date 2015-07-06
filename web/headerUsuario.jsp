@@ -38,7 +38,7 @@
                     <ul>
                         <li><a class="icon fa-circle-o" href="<%=context%>/modificarInfoUser.jsp"> Modificar Información</a></li>
 
-                        <li><a class="icon fa-circle-o" href="#"> opcion 2</a></li>
+                        <li><a class="icon fa-circle-o" href="#"> Mensajes</a></li>
 
                     </ul>
                 </li>

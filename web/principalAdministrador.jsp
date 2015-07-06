@@ -35,9 +35,7 @@
         <!-- Login -->
         <div class="container">  
             <div id="loginbox" class="mainbox col-md-6 col-md-offset-3 col-sm-6 col-sm-offset-3"> 
-                <h3>Hola administrador, Usuario=<%=user%></h3>
-                <h3>Hi <%=userName%>, Login successful. Your Session ID=<%=sessionID%></h3>
-                <br>
+
             </div>
         </div>
 

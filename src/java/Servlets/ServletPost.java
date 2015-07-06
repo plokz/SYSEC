@@ -5,6 +5,7 @@
  */
 package Servlets;
 
+import Beans.MensajesBean;
 import Beans.PostBean;
 import Beans.UsuariosBean;
 import Daos.DaoPost;
@@ -48,21 +49,21 @@ public class ServletPost extends HttpServlet {
             Gson gson = new Gson();
             HttpSession session = request.getSession();
             String JSON = "";
-            DaoPost dao = new DaoPost();
-            PostBean bean = new PostBean();
-            UsuariosBean usu = new UsuariosBean();
+            DaoPost daoPost = new DaoPost();
+            PostBean beanPost = new PostBean();
+            UsuariosBean beanUsu = new UsuariosBean();
 
             switch (opcion) {
                 case 1:
                     int idRegistroUsuario = Integer.parseInt(session.getAttribute("idU").toString());
-                    ListPost = dao.consultaPost(idRegistroUsuario);
+                    ListPost = daoPost.consultaPost(idRegistroUsuario);
                     JSON = "{\"parametros\": " + gson.toJson(ListPost) + "}";
                     out.print(JSON);
                     break;
                 case 2:
                     int buscarId = Integer.parseInt(request.getParameter("buscarId"));
-                    usu = dao.consultaUser(buscarId);
-                    JSON = "{\"parametros\": [" + gson.toJson(usu) + "]}";
+                    beanUsu = daoPost.consultaUser(buscarId);
+                    JSON = "{\"parametros\": [" + gson.toJson(beanUsu) + "]}";
                     out.print(JSON);
                     break;
                 case 3:
@@ -71,11 +72,11 @@ public class ServletPost extends HttpServlet {
                     String presupuestoPost = request.getParameter("presupuestoPost");
                     String descripcionPost = request.getParameter("descripcionPost");
 
-                    bean.setIdUserFK(idRegistroUsuario);
-                    bean.setNombrePublicacion(nombrePost);
-                    bean.setPresupuesto(presupuestoPost);
-                    bean.setDescripcion(descripcionPost);
-                    dao.crearPost(bean);
+                    beanPost.setIdUserFK(idRegistroUsuario);
+                    beanPost.setNombrePublicacion(nombrePost);
+                    beanPost.setPresupuesto(presupuestoPost);
+                    beanPost.setDescripcion(descripcionPost);
+                    daoPost.crearPost(beanPost);
 
                     request.setAttribute("texto", "El registro se completo");
                     request.getRequestDispatcher("/principalUsuarios.jsp").forward(request, response);
@@ -83,9 +84,9 @@ public class ServletPost extends HttpServlet {
                 case 4:
                     javaMail correo = new javaMail();
 
-                    String destino = request.getParameter("email");
-                    String asunto = request.getParameter("nombre");
-                    String mensaje = request.getParameter("mensaje");
+                    String destino = new String(request.getParameter("email").getBytes("ISO8859-1"), "UTF-8");
+                    String asunto = new String(request.getParameter("nombre").getBytes("ISO8859-1"), "UTF-8");
+                    String mensaje = new String(request.getParameter("mensaje").getBytes("ISO8859-1"), "UTF-8");
 
                     correo.send("ploks.valora@gmail.com", asunto, mensaje);
 
@@ -94,21 +95,21 @@ public class ServletPost extends HttpServlet {
                     break;
                 case 5:
                     idRegistroUsuario = Integer.parseInt(session.getAttribute("idU").toString());
-                    ListPost = dao.consultaPostHechos(idRegistroUsuario);
+                    ListPost = daoPost.consultaPostHechos(idRegistroUsuario);
                     JSON = "{\"parametros\": " + gson.toJson(ListPost) + "}";
                     out.print(JSON);
                     break;
                 case 6:
                     int idpostBorrar = Integer.parseInt(request.getParameter("idpostBorrar"));
-                    dao.eliminarPost(idpostBorrar);
+                    daoPost.eliminarPost(idpostBorrar);
 
                     request.setAttribute("texto", "El Post ha sido eliminado");
                     request.getRequestDispatcher("/principalUsuarios.jsp").forward(request, response);
                     break;
                 case 7:
                     int id = Integer.parseInt(request.getParameter("id"));
-                    PostBean postbean = dao.consultarDatosPost(id);
-                    System.out.println(""+gson.toJson(postbean));
+                    PostBean postbean = daoPost.consultarDatosPost(id);
+                    System.out.println("" + gson.toJson(postbean));
                     out.println(gson.toJson(postbean));
                     break;
                 case 8:
@@ -117,13 +118,34 @@ public class ServletPost extends HttpServlet {
                     String presupuestoEditar = request.getParameter("presupuestoEditar");
                     String descripcionEditar = request.getParameter("descripcionEditar");
 
-                    bean.setIdPost(idPostEdit);
-                    bean.setNombrePublicacion(nombrePublicacionEditar);
-                    bean.setPresupuesto(presupuestoEditar);
-                    bean.setDescripcion(descripcionEditar);
-                    dao.modificarPost(bean);
-                    
+                    beanPost.setIdPost(idPostEdit);
+                    beanPost.setNombrePublicacion(nombrePublicacionEditar);
+                    beanPost.setPresupuesto(presupuestoEditar);
+                    beanPost.setDescripcion(descripcionEditar);
+                    daoPost.modificarPost(beanPost);
+
                     request.setAttribute("texto", "Información modificada exitosamente");
+                    request.getRequestDispatcher("/principalUsuarios.jsp").forward(request, response);
+                    break;
+                case 9:
+                    MensajesBean msnBean = new MensajesBean();
+                    //id de quien manda 
+                    int idRemitente = Integer.parseInt(session.getAttribute("idU").toString());
+                    //id quien recive
+                    int idUsermensaje = Integer.parseInt(request.getParameter("idUsermensaje"));
+
+                    //String paraQuien = new String(request.getParameter("nombremensaje").getBytes("ISO8859-1"), "UTF-8");
+                    String asuntomensaje = new String(request.getParameter("asuntomensaje").getBytes("ISO8859-1"), "UTF-8");
+                    String mensajemensaje = new String(request.getParameter("mensajemensaje").getBytes("ISO8859-1"), "UTF-8");
+
+                    msnBean.setIdRemitente(idRemitente);
+                    msnBean.setIdUsuario(idUsermensaje);
+                    msnBean.setAsunto(asuntomensaje);
+                    msnBean.setMensaje(mensajemensaje);
+                    msnBean.setEstado(false);
+                    
+                    daoPost.crearMensaje(msnBean);
+                    request.setAttribute("texto", "El mensaje ha sido enviado exitosamente");
                     request.getRequestDispatcher("/principalUsuarios.jsp").forward(request, response);
                     break;
             }
