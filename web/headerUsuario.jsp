@@ -32,10 +32,11 @@
         <!-- Nav -->
         <nav id="nav">
             <ul>
+                <li><a class="icon fa-home" href="<%=context%>/principalUsuarios.jsp"> Inicio</a></li>
                 <li>
-                    <a class="icon fa-folder-open" href=""> Opciones usuario</a>
+                    <a class="icon fa-slack" href=""> Opciones usuario</a>
                     <ul>
-                        <li><a class="icon fa-circle-o" href="#"> Modificar Información</a></li>
+                        <li><a class="icon fa-circle-o" href="<%=context%>/modificarInfoUser.jsp"> Modificar Información</a></li>
 
                         <li><a class="icon fa-circle-o" href="#"> opcion 2</a></li>
 

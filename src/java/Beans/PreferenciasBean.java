@@ -13,6 +13,7 @@ public class PreferenciasBean {
 
     private int idPreferencias;
     private String preferencia;
+    private boolean tiene;
 
     public int getIdPreferencias() {
         return idPreferencias;
@@ -30,4 +31,13 @@ public class PreferenciasBean {
         this.preferencia = preferencia;
     }
 
+    public boolean isTiene() {
+        return tiene;
+    }
+
+    public void setTiene(boolean tiene) {
+        this.tiene = tiene;
+    }
+
+    
 }

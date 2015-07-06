@@ -19,6 +19,7 @@ public class UsuariosBean {
     private TipoBean tipoBean;
     List<MensajesBean> listaMensajes;
     List<PostBean> listaPost;
+    List<PreferenciasBean> preferenciasBean;
 
     public int getIdUsuario() {
         return idUsuario;
@@ -115,5 +116,12 @@ public class UsuariosBean {
     public void setListaPost(List<PostBean> listaPost) {
         this.listaPost = listaPost;
     }
-    
+
+    public List<PreferenciasBean> getPreferenciasBean() {
+        return preferenciasBean;
+    }
+
+    public void setPreferenciasBean(List<PreferenciasBean> preferenciasBean) {
+        this.preferenciasBean = preferenciasBean;
+    }
 }

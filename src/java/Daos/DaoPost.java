@@ -185,4 +185,29 @@ public class DaoPost {
         }
         return beanPost;
     }
+    
+    public boolean modificarPost(PostBean bean) {
+        String query = "UPDATE post SET nombrePublicacion = ?, presupuesto = ?, descripcion = ? WHERE idPost = ?";
+        boolean status = false;
+
+        try {
+            Connection connection = Conexion.getConnection();
+            PreparedStatement prepareStatement = connection.prepareStatement(query);
+
+            prepareStatement.setString(1, bean.getNombrePublicacion());
+            prepareStatement.setString(2, bean.getPresupuesto());
+            prepareStatement.setString(3, bean.getDescripcion());
+            prepareStatement.setInt(4, bean.getIdPost());
+
+            status = prepareStatement.executeUpdate() != 0;
+
+            prepareStatement.close();
+            connection.close();
+        } catch (SQLException ex) {
+            System.out.println("DaoPost.modificar()");
+            System.out.println(ex);
+        }
+
+        return status;
+    }
 }

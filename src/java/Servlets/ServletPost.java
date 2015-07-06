@@ -39,7 +39,7 @@ public class ServletPost extends HttpServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException, SQLException {
-        response.setContentType("text/html;charset=UTF-8");
+        response.setContentType("application/json");
         PrintWriter out = response.getWriter();
         try {
             List ListPost = null;
@@ -110,6 +110,21 @@ public class ServletPost extends HttpServlet {
                     PostBean postbean = dao.consultarDatosPost(id);
                     System.out.println(""+gson.toJson(postbean));
                     out.println(gson.toJson(postbean));
+                    break;
+                case 8:
+                    int idPostEdit = Integer.parseInt(request.getParameter("idpostEditar"));
+                    String nombrePublicacionEditar = request.getParameter("nombrePublicacionEditar");
+                    String presupuestoEditar = request.getParameter("presupuestoEditar");
+                    String descripcionEditar = request.getParameter("descripcionEditar");
+
+                    bean.setIdPost(idPostEdit);
+                    bean.setNombrePublicacion(nombrePublicacionEditar);
+                    bean.setPresupuesto(presupuestoEditar);
+                    bean.setDescripcion(descripcionEditar);
+                    dao.modificarPost(bean);
+                    
+                    request.setAttribute("texto", "Información modificada exitosamente");
+                    request.getRequestDispatcher("/principalUsuarios.jsp").forward(request, response);
                     break;
             }
         } finally {

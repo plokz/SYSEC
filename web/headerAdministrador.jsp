@@ -32,8 +32,9 @@
         <!-- Nav -->
         <nav id="nav">
             <ul>
+                <li><a class="icon fa-home" href="<%=context%>/principalAdministrador.jsp"> Inicio</a></li>
                 <li>
-                    <a class="icon fa-folder-open" href="#"> Opciones administrador</a>
+                    <a class="icon fa-slideshare" href="#"> Opciones administrador</a>
                     <ul>
                         <li><a class="icon fa-circle-o" href="<%=context%>/preferencias.jsp"> Preferencias</a></li>
 

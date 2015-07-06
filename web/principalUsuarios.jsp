@@ -157,11 +157,10 @@
                         "id": id
                     },
                     success: function(data) {
-                        alert(data);
                         $('#idpostEditar').val(data.idPost);
-                        $('#nombrePublicacionEditar').val(data.nombrePublicacion);
-                        $('#presupuestoEditar').val(data.presupuesto);
-                        $('#descripcionEditar').val(data.descripcion);
+                        $('#nombrePublicacionEditar').val(data.nombrePublicacion).toUpperCase();
+                        $('#presupuestoEditar').val(data.presupuesto).toUpperCase();
+                        $('#descripcionEditar').val(data.descripcion).toUpperCase();
                     },
                     error: function() {
                         alert("Error de conexión");
@@ -353,7 +352,7 @@
                     </div>
                     <form id="enviar" method="post" action="<%=context%>/ServletPost?opcion=8"> 
                         <div class="modal-body">
-                            <input type="text" name="idpostEditar" id="idpostEditar"/>
+                            <input type="hidden" name="idpostEditar" id="idpostEditar"/>
                             <div class="input-group">
                                 <span class="input-group-addon"><i class="glyphicon glyphicon-user"></i></span>
                                 <input id="nombrePublicacionEditar" name="nombrePublicacionEditar" type="text" class="form-control" placeholder="Titulo de Post">                                        
