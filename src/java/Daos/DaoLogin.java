@@ -35,7 +35,6 @@ public class DaoLogin {
             ps.setString(1, user);
             ps.setString(2, pass);
             ResultSet rs = ps.executeQuery();
-            System.out.println("PS*******" + ps);
             while (rs.next()) {
                 logeado.setIdUsuario(rs.getInt(1));
                 logeado.setNombre(rs.getString(2));
@@ -64,7 +63,7 @@ public class DaoLogin {
             PreparedStatement ps = conexion.prepareStatement(query);
             ps.setInt(1, id);
             ResultSet rs = ps.executeQuery();
-            System.out.println("PS*******" + ps);
+
             while (rs.next()) {
                 logeado.setIdUsuario(rs.getInt(1));
                 logeado.setNombre(rs.getString(2));
@@ -121,9 +120,7 @@ public class DaoLogin {
                     prefe.setTiene(false);
                     listaPre.add(prefe);
                 }
-
                 logeado.setPreferenciasBean(listaPre);
-
             }
             rs.close();
             ps.close();
