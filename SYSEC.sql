@@ -136,37 +136,22 @@ ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
--- Table `sysec`.`Mensajes`
--- -----------------------------------------------------
-DROP TABLE IF EXISTS `sysec`.`Mensajes` ;
-
-CREATE TABLE IF NOT EXISTS `sysec`.`Mensajes` (
-  `idMensajes` INT NOT NULL AUTO_INCREMENT,
-  `mensaje` VARCHAR(700) NULL,
-  PRIMARY KEY (`idMensajes`))
-ENGINE = InnoDB;
-
-
--- -----------------------------------------------------
--- Table `sysec`.`TieneMensajes`
+-- Table `mydb`.`TieneMensajes`
 -- -----------------------------------------------------
 DROP TABLE IF EXISTS `sysec`.`TieneMensajes` ;
 
 CREATE TABLE IF NOT EXISTS `sysec`.`TieneMensajes` (
   `idMensajes` INT NOT NULL AUTO_INCREMENT,
-  `usuarios_idUsuarios` INT NOT NULL,
-  `mensajes_idMensajes` INT NOT NULL,
+  `idUsuario` INT NOT NULL,
+  `idRemitente` INT NOT NULL,
+  `asunto` VARCHAR(45) NULL,
+  `mensaje` VARCHAR(1200) NULL,
+  `estado` TINYINT(1) NOT NULL DEFAULT 0,
   PRIMARY KEY (`idMensajes`),
-  INDEX `fk_Mensajes_Usuarios1_idx` (`usuarios_idUsuarios` ASC),
-  INDEX `fk_TieneMensajes_Mensajes1_idx` (`mensajes_idMensajes` ASC),
+  INDEX `fk_Mensajes_Usuarios1_idx` (`idUsuario` ASC),
   CONSTRAINT `fk_Mensajes_Usuarios1`
-    FOREIGN KEY (`usuarios_idUsuarios`)
+    FOREIGN KEY (`idUsuario`)
     REFERENCES `sysec`.`Usuarios` (`idUsuarios`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION,
-  CONSTRAINT `fk_TieneMensajes_Mensajes1`
-    FOREIGN KEY (`mensajes_idMensajes`)
-    REFERENCES `sysec`.`Mensajes` (`idMensajes`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
