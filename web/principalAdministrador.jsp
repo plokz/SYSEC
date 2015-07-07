@@ -9,23 +9,7 @@
         <meta name="description" content="" />
         <meta name="keywords" content="" />
         <!--[if lte IE 8]><script src="css/ie/html5shiv.js"></script><![endif]-->
-        <script src="<%=context%>/js/jquery.min.js"></script>
-        <script src="<%=context%>/js/jquery.dropotron.min.js"></script>
-        <script src="<%=context%>/js/skel.min.js"></script>
-        <script src="<%=context%>/js/skel-layers.min.js"></script>
-        <script src="<%=context%>/js/init.js"></script>
-        <noscript>
-        <link rel="stylesheet" href="<%=context%>/css/skel.css" />
-        <link rel="stylesheet" href="<%=context%>/css/style.css" />
-        <link rel="stylesheet" href="<%=context%>/css/style-desktop.css" />
-        </noscript>
-        <!--[if lte IE 8]><link rel="stylesheet" href="css/ie/v8.css" /><![endif]-->
-        <!-- Latest compiled and minified CSS -->
-
-        <link rel="stylesheet" href="<%=context%>/css/font-awesome.min.css">
-        <link rel="stylesheet" href="<%=context%>/css/bootstrap.min.css">
-        <link rel="stylesheet" href="<%=context%>/css/bootstrap-theme.min.css">
-        <script src="<%=context%>/js/bootstrap.min.js"></script>
+        <%@include file="JSCSSjsp.jsp" %>
 
     </head>
     <body>
