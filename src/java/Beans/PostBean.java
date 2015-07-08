@@ -14,6 +14,16 @@ public class PostBean {
     private int idPost, idUserFK;
     private String nombrePublicacion, presupuesto, descripcion,fechaPost;
 
+    public String getFechaPost() {
+        return fechaPost;
+    }
+
+    public void setFechaPost(String fechaPost) {
+        this.fechaPost = fechaPost;
+    }
+    
+    
+
     public int getIdPost() {
         return idPost;
     }
