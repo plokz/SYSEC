@@ -24,7 +24,7 @@ public class DaoPost {
 
     public int crearPost(PostBean bean) {
         int resultado = 0;
-        String sqlcrearPost = "INSERT INTO post values (null,?,?,?,?);";
+        String sqlcrearPost = "INSERT INTO post values (null,?,?,?,?,curdate());";
         PreparedStatement ps = null;
         try {
             Connection conexion = Conexion.getConnection();
