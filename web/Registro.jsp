@@ -128,7 +128,7 @@
                                 <span class="input-group-addon"><i class="fa fa-child"></i></span>
                                 <input id="nombre" name="nombre" type="text" class="form-control" placeholder="Nombre de la empresa" required>                                        
                             </div>
-
+                            <br>
                             <div class="form-inline">
                                 <div class="input-group col-sm-3 controls">
                                     <div class="input-group col-md-10">
@@ -144,23 +144,23 @@
                                     <input id="cp" name="cp" type="text" class="form-control" placeholder="C.P"  required pattern="[0-9]*">
                                 </div>
                             </div>
-
+                            <br>
                             <div class="input-group">
                                 <span class="input-group-addon"><i class="fa fa-paper-plane-o"></i></span>
                                 <input id="colonia" name="colonia" type="text" class="form-control" placeholder="Colonia" required>
                             </div>
-
+                            <br>
                             <div class="input-group col-sm-5">
                                 <span class="input-group-addon"><i class="fa fa-barcode"></i></span>
                                 <input id="RFC" name="RFC" type="text" class="form-control" placeholder="R.F.C" required>
                             </div>
-
+                            <br>
                             <div class="input-group">
                                 <span class="input-group-addon"><i class="fa fa-envelope"></i></span>
                                 <input id="email" name="email" type="email" class="form-control" placeholder="Correo electronico" 
                                        pattern="^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$" required onKeyUp="existeCorreo()" onChange="existeCorreo()">
                             </div>
-
+                            <br>
                             <div class="form-inline"> 
                                 <div class="input-group col-sm-6">
                                     <span class="input-group-addon"><i class="glyphicon glyphicon-user"></i></span>
@@ -172,9 +172,9 @@
                                     <input id="password" name="password" type="password" class="form-control" placeholder="Contraseña" disabled required>
                                 </div>
                             </div>
-
+                            <br>
                             <div id="modifiersDiv"></div>
-
+                            <br>
                             <div class="form-horizontal">
                                 <a href="<%=context%>/index.jsp" class="col-sm-6 controls"> Cancelar</a>
                                 <!-- Button --> 
