@@ -59,6 +59,7 @@ CREATE TABLE IF NOT EXISTS `sysec`.`Usuarios` (
   `password` VARCHAR(45) NULL,
   `estado` INT NOT NULL,
   `tipo` INT NOT NULL DEFAULT 2,
+  `fechaMiembro` DATE NULL,
   PRIMARY KEY (`idUsuarios`),
   INDEX `fk_UsuariosEmpresa_Estado1_idx` (`estado` ASC),
   INDEX `fk_Usuarios_Tipo1_idx` (`tipo` ASC),
@@ -125,6 +126,7 @@ CREATE TABLE IF NOT EXISTS `sysec`.`Post` (
   `presupuesto` VARCHAR(45) NULL,
   `descripcion` VARCHAR(1200) NULL,
   `usuariospPFK` INT NOT NULL,
+  `fechaPost` DATE NULL,
   PRIMARY KEY (`idPost`),
   INDEX `fk_Post_Usuarios1_idx` (`usuariospPFK` ASC),
   CONSTRAINT `fk_Post_Usuarios1`
@@ -147,6 +149,7 @@ CREATE TABLE IF NOT EXISTS `sysec`.`TieneMensajes` (
   `asunto` VARCHAR(45) NULL,
   `mensaje` VARCHAR(1200) NULL,
   `estado` TINYINT(1) NOT NULL DEFAULT 0,
+  `fechaMensaje` DATE NULL,
   PRIMARY KEY (`idMensajes`),
   INDEX `fk_Mensajes_Usuarios1_idx` (`idUsuario` ASC),
   CONSTRAINT `fk_Mensajes_Usuarios1`
