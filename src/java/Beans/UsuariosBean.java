@@ -22,6 +22,17 @@ public class UsuariosBean {
     List<PostBean> listaPost;
     List<PreferenciasBean> preferenciasBean;
 
+    public String getFechaMiembro() {
+        return fechaMiembro;
+    }
+
+    public void setFechaMiembro(String fechaMiembro) {
+        this.fechaMiembro = fechaMiembro;
+    }
+
+    
+    
+    
     public int getIdUsuario() {
         return idUsuario;
     }
