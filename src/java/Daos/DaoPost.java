@@ -214,7 +214,7 @@ public class DaoPost {
 
     public int crearMensaje(MensajesBean bean) {
         int resultado = 0;
-        String sqlMensaje = "INSERT INTO tienemensajes values (null,?,?,?,?,?);";
+        String sqlMensaje = "INSERT INTO tienemensajes values (null,?,?,?,?,?,curdate());";
         PreparedStatement ps = null;
         try {
             Connection conexion = Conexion.getConnection();
