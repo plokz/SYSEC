@@ -12,7 +12,7 @@ package Beans;
 public class PostBean {
 
     private int idPost, idUserFK;
-    private String nombrePublicacion, presupuesto, descripcion;
+    private String nombrePublicacion, presupuesto, descripcion,fechaPost;
 
     public int getIdPost() {
         return idPost;

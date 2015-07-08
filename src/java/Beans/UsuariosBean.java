@@ -14,9 +14,10 @@ import java.util.List;
 public class UsuariosBean {
 
     private int idUsuario;
-    private String nombre, rfc, colonia, CP, email, usuario, password;
+    private String nombre, rfc, colonia, CP, email, usuario, password,fechaMiembro;
     private EstadoBean estadoBean;
     private TipoBean tipoBean;
+   
     List<MensajesBean> listaMensajes;
     List<PostBean> listaPost;
     List<PreferenciasBean> preferenciasBean;
