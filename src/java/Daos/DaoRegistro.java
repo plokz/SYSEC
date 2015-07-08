@@ -106,7 +106,7 @@ public class DaoRegistro {
 
     public int altaUsuario(UsuariosBean bean, String[] valuesChecks) {
         int resultado = 0;
-        String sqlAltaUsuario = "insert into usuarios values (null,?,?,?,?,?,?,?,?,?);";
+        String sqlAltaUsuario = "insert into usuarios values (null,?,?,?,?,?,?,?,?,?,curdate());";
         PreparedStatement ps = null;
         try {
             Connection conexion = Conexion.getConnection();
@@ -120,6 +120,7 @@ public class DaoRegistro {
             ps.setString(7, bean.getPassword());
             ps.setInt(8, bean.getEstadoBean().getIdEstado());
             ps.setInt(9, bean.getTipoBean().getIdTipo());
+         
             resultado = ps.executeUpdate();
 
             if (valuesChecks.length > 0) {
