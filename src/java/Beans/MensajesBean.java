@@ -12,9 +12,28 @@ package Beans;
 public class MensajesBean {
 
     private int idMensaje, idUsuario, idRemitente;
-    private String asunto, mensaje;
+    private String asunto, mensaje, nombre,fechaMensaje;
     private boolean estado;
 
+    public String getNombre() {
+        return nombre;
+    }
+
+    public void setNombre(String nombre) {
+        this.nombre = nombre;
+    }
+
+    public String getFechaMensaje() {
+        return fechaMensaje;
+    }
+
+    public void setFechaMensaje(String fechaMensaje) {
+        this.fechaMensaje = fechaMensaje;
+    }
+
+    
+    
+    
     public int getIdMensaje() {
         return idMensaje;
     }
