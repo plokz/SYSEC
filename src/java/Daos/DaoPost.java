@@ -233,4 +233,42 @@ public class DaoPost {
         }
         return resultado;
     }
+
+   public List consultaMensajes(int idUsuario) {
+        //Lista para retornar los beans con los registros
+        List listmens = new ArrayList();
+        MensajesBean mensb;
+        try {
+            //Se establece la conexion
+            //
+
+            Connection conexion = Conexion.getConnection();
+            //Se prepara la sentencia SQL
+            PreparedStatement ps = conexion.prepareStatement(""
+                    + "     select idremitente, (select nombre from usuarios where idusuarios=idremitente) nombre,asunto,mensaje,fechaMensaje from usuarios u join tienemensajes t on u.idusuarios=t.idusuario where "+idUsuario+"=idUsuarios;");
+            //Se ejecuta la sentencia SQL
+            System.out.println(""+ps);
+            ResultSet rs = ps.executeQuery();
+            //Manipular los datos obtenidos de la consulta (ResultSet)
+            while (rs.next()) {
+                mensb = new MensajesBean();
+                //Asignar el contenido del ResultSet a cada atributo del bean
+                mensb.setIdRemitente(rs.getInt(1));
+                mensb.setNombre(rs.getString(2));
+                mensb.setAsunto(rs.getString(3));
+                mensb.setMensaje(rs.getString(4));
+                mensb.setFechaMensaje(rs.getString(5));
+                System.out.println(rs.getString(5));
+                listmens.add(mensb);
+            }
+            //Cerramos el resultset, preparestatement y la conexion
+            rs.close();
+            ps.close();
+            conexion.close();
+        } catch (SQLException sqle) {
+            System.err.println("Error en la consulta");
+        }
+        return listmens;
+    }
+
 }

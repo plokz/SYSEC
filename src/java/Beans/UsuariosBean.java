@@ -14,10 +14,10 @@ import java.util.List;
 public class UsuariosBean {
 
     private int idUsuario;
-    private String nombre, rfc, colonia, CP, email, usuario, password,fechaMiembro;
+    private String nombre, rfc, colonia, CP, email, usuario, password, fechaMiembro;
     private EstadoBean estadoBean;
     private TipoBean tipoBean;
-   
+
     List<MensajesBean> listaMensajes;
     List<PostBean> listaPost;
     List<PreferenciasBean> preferenciasBean;
@@ -30,9 +30,6 @@ public class UsuariosBean {
         this.fechaMiembro = fechaMiembro;
     }
 
-    
-    
-    
     public int getIdUsuario() {
         return idUsuario;
     }

@@ -29,6 +29,7 @@ import javax.servlet.http.HttpSession;
  */
 public class ServletPost extends HttpServlet {
 
+    
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
      * methods.
@@ -43,7 +44,7 @@ public class ServletPost extends HttpServlet {
         response.setContentType("application/json");
         PrintWriter out = response.getWriter();
         try {
-            List ListPost = null;
+            List ListMens = null;
             List listaPerso = null;
             int opcion = Integer.parseInt(request.getParameter("opcion"));
             Gson gson = new Gson();
@@ -56,8 +57,8 @@ public class ServletPost extends HttpServlet {
             switch (opcion) {
                 case 1:
                     int idRegistroUsuario = Integer.parseInt(session.getAttribute("idU").toString());
-                    ListPost = daoPost.consultaPost(idRegistroUsuario);
-                    JSON = "{\"parametros\": " + gson.toJson(ListPost) + "}";
+                    ListMens = daoPost.consultaPost(idRegistroUsuario);
+                    JSON = "{\"parametros\": " + gson.toJson(ListMens) + "}";
                     out.print(JSON);
                     break;
                 case 2:
@@ -95,8 +96,8 @@ public class ServletPost extends HttpServlet {
                     break;
                 case 5:
                     idRegistroUsuario = Integer.parseInt(session.getAttribute("idU").toString());
-                    ListPost = daoPost.consultaPostHechos(idRegistroUsuario);
-                    JSON = "{\"parametros\": " + gson.toJson(ListPost) + "}";
+                    ListMens = daoPost.consultaPostHechos(idRegistroUsuario);
+                    JSON = "{\"parametros\": " + gson.toJson(ListMens) + "}";
                     out.print(JSON);
                     break;
                 case 6:
@@ -143,10 +144,17 @@ public class ServletPost extends HttpServlet {
                     msnBean.setAsunto(asuntomensaje);
                     msnBean.setMensaje(mensajemensaje);
                     msnBean.setEstado(false);
-                    
+
                     daoPost.crearMensaje(msnBean);
                     request.setAttribute("texto", "El mensaje ha sido enviado exitosamente");
                     request.getRequestDispatcher("/principalUsuarios.jsp").forward(request, response);
+                    break;
+                case 10:
+                    int idUsuario = Integer.parseInt(session.getAttribute("idU").toString());
+                    ListMens = daoPost.consultaMensajes(idUsuario);
+                    JSON = "{\"parametros\": " + gson.toJson(ListMens) + "}";
+                    System.out.println(""+JSON);
+                    out.print(JSON);
                     break;
             }
         } finally {

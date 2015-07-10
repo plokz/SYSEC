@@ -13,12 +13,13 @@
         <!--[if lte IE 8]><script src="css/ie/html5shiv.js"></script><![endif]-->
         <%@include file="JSCSSjsp.jsp" %>
 
+
         <script>
 
             $(document).ready(function() {
 
                 obtenerPost();
-                obtenerPostHechos();
+
 
                 $('#addP').click(function() {
                     $('#agregarPost').fadeIn();
@@ -41,19 +42,19 @@
 
                 var context = $('#contexto').val();
 
-                $.getJSON(context + '/ServletPost?opcion=1', function(data) {
-
+                $.getJSON(context + '/ServletPost?opcion=10', function(data) {
                     $('#cuerpotablaPricipal').remove();
-
                     if (data.parametros.length > 0) {
-
                         var cuerpoT = '<tbody id="cuerpotablaPricipal">';
+                        
                         for (BuscadorBean in data.parametros) {
-                            cuerpoT += "<tr><td>" + data.parametros[BuscadorBean].nombrePublicacion.toUpperCase() + "</td>"
-                                    + "<td>" + data.parametros[BuscadorBean].presupuesto.toUpperCase() + "</td>"
-                                    + "<td>" + data.parametros[BuscadorBean].descripcion.toUpperCase() + "</td>"
-                                    + "<td><a data-toggle='modal' data-id=" + data.parametros[BuscadorBean].idUserFK + " title='Enviar mensaje' class='open-Modal btn btn-success icon fa-comments-o' data-target='#EnviarMensaje'></a></td>"
-                                    + "<td><a data-toggle='modal' data-id=" + data.parametros[BuscadorBean].idUserFK + " title='Enviar correo' class='open-Modal btn btn-primary glyphicon glyphicon-envelope' data-target='#EnviarCorreo'></a></td></tr>"
+                           
+                            cuerpoT += "<tr><td>" + data.parametros[BuscadorBean].fechaMensaje + "</td>"
+                                    + "<td>" + data.parametros[BuscadorBean].nombre.toUpperCase() + "</td>"
+                                    + "<td>" + data.parametros[BuscadorBean].asunto.toUpperCase() + "</td>"
+                                    + "<td>" + data.parametros[BuscadorBean].mensaje.toUpperCase() + "</td>"
+                                    + "<td><a data-toggle='modal' data-id=" + data.parametros[BuscadorBean].idRemitente + " title='Enviar mensaje' class='open-Modal btn btn-success icon fa-comments-o' data-target='#EnviarMensaje'></a></td>"
+                                    + "<td><a data-toggle='modal' data-id=" + data.parametros[BuscadorBean].idRemitente + " title='Enviar correo' class='open-Modal btn btn-primary glyphicon glyphicon-envelope' data-target='#EnviarCorreo'></a></td></tr>"
                         }
                         $('#tablaPricipal').append(cuerpoT + "</tbody>");
                         $('#tablaPricipal').dataTable();
@@ -65,37 +66,6 @@
                 });
             }
 
-            function obtenerPostHechos() {
-
-                $.ajaxSetup({
-                    async: false
-                });
-
-                var context = $('#contexto').val();
-
-                $.getJSON(context + '/ServletPost?opcion=5', function(data) {
-
-                    $('#cuerpotablaPricipalHechos').remove();
-
-                    if (data.parametros.length > 0) {
-
-                        var cuerpoT = '<tbody id="cuerpotablaPricipalHechos">';
-                        for (BuscadorBean in data.parametros) {
-                            cuerpoT += "<tr><td>" + data.parametros[BuscadorBean].nombrePublicacion.toUpperCase() + "</td>"
-                                    + "<td>" + data.parametros[BuscadorBean].presupuesto.toUpperCase() + "</td>"
-                                    + "<td>" + data.parametros[BuscadorBean].descripcion.toUpperCase() + "</td>"
-                                    + "<td><a data-toggle='modal' data-id=" + data.parametros[BuscadorBean].idPost + " title='Editar' class='open-Modal btn btn-primary glyphicon glyphicon-edit' data-target='#editarPost' onclick='editarPost(" + data.parametros[BuscadorBean].idPost + ")'></a></td>"
-                                    + "<td><a data-toggle='modal' data-id=" + data.parametros[BuscadorBean].idPost + " title='Eliminar' class='open-Modal btn btn-danger glyphicon glyphicon-erase' data-target='#eliminarPost' onclick='elminarPost(" + data.parametros[BuscadorBean].idPost + ")'></a></td></tr>";
-                        }
-                        $('#tablaPricipalHechos').append(cuerpoT + "</tbody>");
-                        $('#tablaPricipalHechos').dataTable();
-                    }
-                });
-
-                $.ajaxSetup({
-                    async: true
-                });
-            }
 
             $(document).on("click", ".open-Modal", function() {
                 var idBusq = $(this).data('id');
@@ -106,123 +76,29 @@
 
                 var context = $('#contexto').val();
                 $.getJSON(context + '/ServletPost?opcion=2&buscarId=' + idBusq, function(data) {
-                    
-
                     if (data.parametros.length > 0) {
                         for (BuscadorBean in data.parametros) {
                             $('#nombre').val(data.parametros[BuscadorBean].nombre.toUpperCase());
                             $('#email').val(data.parametros[BuscadorBean].email.toUpperCase());
-
                             $('#idUsermensaje').val(data.parametros[BuscadorBean].idUsuario);
+                        
                             $('#nombremensaje').val(data.parametros[BuscadorBean].nombre.toUpperCase());
                         }
                     }
                 });
-
                 $.ajaxSetup({
                     async: true
                 });
 
             });
-
-            function elminarPost(idpostEliminar) {
-                $('#idpostBorrar').val(idpostEliminar);
-            }
-
-            function editarPost(idpostEditar) {
-                var context = $('#contexto').val();
-                var id = idpostEditar;
-
-                $.ajax({
-                    url: context + '/ServletPost',
-                    type: 'POST',
-                    data: {
-                        "opcion": 7,
-                        "id": id
-                    },
-                    success: function(data) {
-                        $('#idpostEditar').val(data.idPost);
-                        $('#nombrePublicacionEditar').val(data.nombrePublicacion).toUpperCase();
-                        $('#presupuestoEditar').val(data.presupuesto).toUpperCase();
-                        $('#descripcionEditar').val(data.descripcion).toUpperCase();
-                    },
-                    error: function() {
-                        alert("Error de conexión");
-                    }
-                });
-            }
         </script>
+
     </head>
     <body>
         <!-- header -->
         <%@include file="headerUsuario.jsp" %>
         <input type="hidden" name="contexto" id="contexto" value="<%=context%>"/>
 
-        <!-- Banner -->
-        <div id="agregarPost" style="display: none">
-            <div class="box container">
-                <div class="col-xs-12">
-                    <h3 class="text-center">Publicar Post!</h3></br>
-                    <div class="greybox col-md-5 section text-center">
-                        <form id="enviar" method="post" action="<%=context%>/ServletPost?opcion=3" class="form-horizontal">
-                            <div class="input-group">
-                                <span class="input-group-addon"><i class="glyphicon glyphicon-user"></i></span>
-                                <input id="nombrePost" name="nombrePost" type="text" class="form-control" placeholder="Titulo de Post">                                        
-                            </div>
-                            <br>
-                            <div class="input-group">
-                                <span class="input-group-addon"><i class="fa fa-money"></i></span>
-                                <input id="presupuestoPost" name="presupuestoPost" type="text" class="form-control" placeholder="Presupuesto">
-                            </div>
-                            <br>
-                            <div class="input-group">
-                                <span class="input-group-addon"><i class="glyphicon glyphicon-pencil"></i></span>
-                                <textarea id="descripcionPost" name="descripcionPost" class="form-control" required placeholder="Descripción"></textarea>
-                            </div>
-                            <div id="setGroupGrade">
-                                <br>
-                                <button data-toggle="modal" class="open-Modal btn btn-success" type="submit">Aceptar</button>
-                                <button id="cancelarP" class="btn btn-danger" type="reset">Cancelar</button>
-                            </div>
-                        </form>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Table post echos-->
-            <div id="listaPostHechos" class="box container">
-                <div class="greybox col-xs-12">
-                    <div class="col-md-12 section text-center">
-                        <h3>Listado de Post's Hechos</h3> 
-                        <table id="tablaPricipalHechos" class="table table-bordered table-striped table-hover" cellspacing="0" width="100%">
-                            <thead>
-                                <tr>
-                                    <th>Titulo</th>
-                                    <th>Presupuesto</th>
-                                    <th>Descripcion</th>
-                                    <th></th>
-                                    <th></th>
-                                </tr>
-                            </thead>
-
-                            <tfoot>
-                                <tr>
-                                    <th>Titulo</th>
-                                    <th>Presupuesto</th>
-                                    <th>Descripcion</th>
-                                    <th></th>
-                                    <th></th>
-                                </tr>
-                            </tfoot>
-
-                            <tbody id="cuerpotablaPricipalHechos"></tbody>
-
-                        </table>
-
-                    </div>
-                </div>
-            </div>
-        </div>
 
         <!-- Table Post disponibles-->
         <div id="listaPost" class="box container">
@@ -234,16 +110,17 @@
             <%}%>
             <div class="greybox col-xs-12">
 
-                <button id="addP" class="btn btn-warning icon fa-newspaper-o" type="submit"> Publica un Post</button>
+
 
                 <div class="col-md-12 section text-center">
-                    <h3>Listado de Post's</h3>
+                    <h3>Listado de Mensajes</h3>
                     <table id="tablaPricipal" class="table table-bordered table-striped table-hover" cellspacing="0" width="100%">
                         <thead>
                             <tr>
-                                <th>Titulo</th>
-                                <th>Presupuesto</th>
-                                <th>Descripcion</th>
+                                <th>Fecha</th>
+                                <th>Empresa</th>
+                                <th>Asunto</th>
+                                <th>Mensaje</th>
                                 <th></th>
                                 <th></th>
                             </tr>
@@ -251,9 +128,10 @@
 
                         <tfoot>
                             <tr>
+                                <th>Fecha</th>
                                 <th>Titulo</th>
                                 <th>Presupuesto</th>
-                                <th>Descripcion</th>
+                                <th>Descripcion</th>    
                                 <th></th>
                                 <th></th>
                             </tr>
