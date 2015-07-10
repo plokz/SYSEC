@@ -21,6 +21,11 @@
 <script src="<%=context%>/js/jquery.dataTables.min.js"></script>
 <script src="<%=context%>/js/dataTables.bootstrap.js"></script>
 
+<script src="<%=context%>/js/bootstrap-datepicker.js"></script>
+<script src="<%=context%>/js/bootstrap-datepicker.min.js"></script>
+<script src="<%=context%>/js/bootstrap-datepicker.es.min.js"></script>
+<link rel="stylesheet" href="<%=context%>/css/bootstrap-datepicker3.css">
+
 <!-- JavaScript -->
 <script src="<%=context%>/js/alertify.min.js"></script>
 <!-- CSS -->

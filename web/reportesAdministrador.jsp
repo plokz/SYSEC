@@ -18,7 +18,16 @@
         <meta name="keywords" content="" />
         <!--[if lte IE 8]><script src="css/ie/html5shiv.js"></script><![endif]-->
         <%@include file="JSCSSjsp.jsp" %>
-
+        <script>
+            
+            $(document).ready(function() {
+                $('#agregarNuevoProfe .input-group.date').datepicker({
+                    format: "yyyy-mm-dd",
+                    language: "es",
+                    autoclose: true
+                });
+            });
+        </script>
     </head>
     <body>
         <!-- header -->
