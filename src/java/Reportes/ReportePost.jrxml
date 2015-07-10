@@ -1,0 +1,167 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="null" language="groovy" pageWidth="842" pageHeight="595" orientation="Landscape" columnWidth="802" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="c398a9d2-e3b0-4af1-81cb-d70dd10b77e8">
+	<property name="ireport.zoom" value="1.0"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<style name="Title" fontName="Times New Roman" fontSize="50" isBold="true" pdfFontName="Times-Bold"/>
+	<style name="SubTitle" forecolor="#736343" fontName="Arial" fontSize="18"/>
+	<style name="Column header" forecolor="#666666" fontName="Arial" fontSize="12" isBold="true"/>
+	<style name="Detail" fontName="Arial" fontSize="12"/>
+	<style name="Row" mode="Transparent">
+		<conditionalStyle>
+			<conditionExpression><![CDATA[$V{REPORT_COUNT}%2 == 0]]></conditionExpression>
+			<style backcolor="#E6DAC3"/>
+		</conditionalStyle>
+	</style>
+	<parameter name="Inicio" class="java.lang.String"/>
+	<parameter name="Final" class="java.lang.String"/>
+	<queryString>
+		<![CDATA[Select nombre,(SELECT COUNT(*) FROM POST WHERE usuariospPFK = idusuarios) as CantidadPost,fechaPost,
+(Select count(*) from tienemensajes WHERE idusuario= idusuarios) as CantidadMensajes
+from Usuarios left join post on idusuarios=usuariospPFK WHERE fechaPost BETWEEN $P{Inicio} AND $P{Final};]]>
+	</queryString>
+	<field name="nombre" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="CantidadPost" class="java.lang.Long"/>
+	<field name="fechaPost" class="java.sql.Date">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="CantidadMensajes" class="java.lang.Long"/>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="136" splitType="Stretch">
+			<staticText>
+				<reportElement style="Title" x="270" y="39" width="296" height="62" uuid="61a4d1a9-a41b-4be5-ad6d-fdf14f31cc9a"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font pdfFontName="Times-Roman"/>
+				</textElement>
+				<text><![CDATA[Reporte Post]]></text>
+			</staticText>
+			<staticText>
+				<reportElement style="SubTitle" x="144" y="101" width="81" height="22" uuid="29d8a04c-ef31-4ac4-bd97-4c1dd2a18d99"/>
+				<textElement>
+					<font fontName="Times New Roman" pdfFontName="Times-Roman"/>
+				</textElement>
+				<text><![CDATA[Fecha :]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="250" y="101" width="100" height="20" uuid="af14966e-c6cc-410b-97b5-8daf873f27fb"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$P{Inicio}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="483" y="103" width="100" height="20" uuid="c8c39b9e-bdcc-4763-93e9-4b0ad3d7d507"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$P{Final}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="400" y="103" width="30" height="20" uuid="2f8761a3-41ff-4369-8042-531df333183d"/>
+				<text><![CDATA[a]]></text>
+			</staticText>
+			<image>
+				<reportElement x="1" y="0" width="270" height="75" uuid="532d1ba6-1b44-4145-b53c-8eac975dff07"/>
+				<imageExpression><![CDATA["C:\\Users\\Rodrigo Mendoza\\Documents\\NetBeansProjects\\Proyectos\\SYSEC\\web\\images\\escudo.png"]]></imageExpression>
+			</image>
+		</band>
+	</title>
+	<pageHeader>
+		<band splitType="Stretch"/>
+	</pageHeader>
+	<columnHeader>
+		<band height="16" splitType="Stretch">
+			<line>
+				<reportElement positionType="FixRelativeToBottom" x="0" y="15" width="802" height="1" uuid="75c3bec6-f476-4daa-b670-cfd56441c081"/>
+				<graphicElement>
+					<pen lineWidth="0.5" lineColor="#999999"/>
+				</graphicElement>
+			</line>
+			<staticText>
+				<reportElement style="Column header" x="0" y="0" width="200" height="15" forecolor="#736343" uuid="8b64a9c7-6cbb-4a8a-a033-d94adae007f5"/>
+				<textElement rotation="None" markup="none">
+					<font isItalic="false" isUnderline="false" isStrikeThrough="false"/>
+					<paragraph lineSpacing="Double"/>
+				</textElement>
+				<text><![CDATA[Nombre]]></text>
+			</staticText>
+			<staticText>
+				<reportElement style="Column header" x="200" y="0" width="200" height="15" forecolor="#736343" uuid="58635c9a-ca94-4bb1-a658-6c625543176c"/>
+				<text><![CDATA[Cantidad de Post realizados]]></text>
+			</staticText>
+			<staticText>
+				<reportElement style="Column header" x="400" y="0" width="200" height="15" forecolor="#736343" uuid="bbd62aed-ccf4-490e-8c0b-4313975e16c6"/>
+				<text><![CDATA[Fecha ]]></text>
+			</staticText>
+			<staticText>
+				<reportElement style="Column header" x="600" y="0" width="200" height="15" forecolor="#736343" uuid="eb3c49b8-2526-46d1-b6c2-fffff7b1787f"/>
+				<text><![CDATA[Cantidad Mensajes]]></text>
+			</staticText>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="15" splitType="Stretch">
+			<frame>
+				<reportElement style="Row" mode="Opaque" x="0" y="0" width="802" height="15" uuid="61e87939-cd7c-42e5-994f-431ff6c77c22"/>
+				<textField isStretchWithOverflow="true">
+					<reportElement style="Detail" x="0" y="0" width="200" height="15" uuid="e65e617b-3ade-46d2-912c-2754610a6f08"/>
+					<textFieldExpression><![CDATA[$F{nombre}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="true">
+					<reportElement style="Detail" x="200" y="0" width="200" height="15" uuid="93e1894b-b05b-4892-9d4f-cef52dd3832b"/>
+					<textFieldExpression><![CDATA[$F{CantidadPost}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="true">
+					<reportElement style="Detail" x="400" y="0" width="200" height="15" uuid="7e9ded4b-c4a6-4289-bbe1-de511f387b36"/>
+					<textFieldExpression><![CDATA[$F{fechaPost}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="true">
+					<reportElement style="Detail" x="600" y="0" width="200" height="15" uuid="7a77a960-b58b-43c2-adde-30c3fa97a1a6"/>
+					<textFieldExpression><![CDATA[$F{CantidadMensajes}]]></textFieldExpression>
+				</textField>
+			</frame>
+		</band>
+	</detail>
+	<columnFooter>
+		<band height="6" splitType="Stretch">
+			<line>
+				<reportElement positionType="FixRelativeToBottom" x="0" y="3" width="802" height="1" uuid="17f88ba1-d000-4cfa-8893-b1a0197d6da6"/>
+				<graphicElement>
+					<pen lineWidth="0.5" lineColor="#999999"/>
+				</graphicElement>
+			</line>
+		</band>
+	</columnFooter>
+	<pageFooter>
+		<band height="25" splitType="Stretch">
+			<frame>
+				<reportElement mode="Opaque" x="-21" y="1" width="843" height="24" forecolor="#D0B48E" backcolor="#F2EBDF" uuid="9f40b3a6-87ca-441b-ab18-9b4fc38c7e6c"/>
+				<textField evaluationTime="Report">
+					<reportElement style="Column header" x="783" y="1" width="40" height="20" forecolor="#736343" uuid="eae8230b-e525-4aa6-b60f-366637e4d820"/>
+					<textElement verticalAlignment="Middle">
+						<font size="10" isBold="false"/>
+					</textElement>
+					<textFieldExpression><![CDATA[" " + $V{PAGE_NUMBER}]]></textFieldExpression>
+				</textField>
+				<textField>
+					<reportElement style="Column header" x="703" y="1" width="80" height="20" forecolor="#736343" uuid="51a19b7f-b65a-43c6-b41c-e5c8ab36191d"/>
+					<textElement textAlignment="Right" verticalAlignment="Middle">
+						<font size="10" isBold="false"/>
+					</textElement>
+					<textFieldExpression><![CDATA["Page "+$V{PAGE_NUMBER}+" of"]]></textFieldExpression>
+				</textField>
+				<textField pattern="EEEEE dd MMMMM yyyy">
+					<reportElement style="Column header" x="22" y="1" width="197" height="20" forecolor="#736343" uuid="c9fb3eaf-7f5d-451e-966a-f8ba986b0a47"/>
+					<textElement verticalAlignment="Middle">
+						<font size="10" isBold="false"/>
+					</textElement>
+					<textFieldExpression><![CDATA[new java.util.Date()]]></textFieldExpression>
+				</textField>
+			</frame>
+		</band>
+	</pageFooter>
+	<summary>
+		<band splitType="Stretch"/>
+	</summary>
+</jasperReport>

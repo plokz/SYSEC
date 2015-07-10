@@ -26,13 +26,13 @@
         <input type="hidden" name="contexto" id="contexto" value="<%=context%>"/>
 
         <!-- Reporte post hechos-->
-        <div id="agregarNuevoProfe" style="display: none">
+        <div id="agregarNuevoProfe" >
             <div class="box container">
                 <div class="col-xs-12">
                     <h3 class="text-center">Reporte de post realizados</h3></br>
                     <!--<div class="col-md-6 col-lg-6 col-md-offset-6 col-lg-offset-3">-->
                     <!-- Manda a ese servlet en esa opcion 4-->
-                    <form method="post" action="<%=context%>/ServletPreferencias?opcion=4" class="form-inline">
+                    <form method="post" action="<%=context%>/ServletReportePost" class="form-inline">
 
                         <div class="input-group date">
                             <span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span></span>
@@ -54,14 +54,14 @@
         </div>
 
         <!-- Reporte usuarios agregados -->
-        <div id="agregarNuevoProfe" style="display: none">
+        <div id="agregarNuevoProfe" >
             <div class="box container">
                 <div class="col-xs-12">
-                    <h3 class="text-center">Reporte de post realizados</h3></br>
+                    <h3 class="text-center">Reporte Usuarios Registrados</h3></br>
                     <!--<div class="col-md-6 col-lg-6 col-md-offset-6 col-lg-offset-3">-->
                     <!-- Manda a ese servlet en esa opcion 5-->
-                    <form method="post" action="<%=context%>/ServletPreferencias?opcion=5" class="form-inline">
-
+                    <form method="post" action="<%=context%>/ServletReporteUsuarios" class="form-inline">
+                    <!--<form method="post" action="<%=context%>/ServletPreferencias?opcion=5" class="form-inline"> -->        
                         <div class="input-group date">
                             <span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span></span>
                             <input type="text"  name="fechaIU" id="fechaIU" class="form-control" placeholder="Fecha de inicio" required>

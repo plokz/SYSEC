@@ -38,7 +38,7 @@
                     <ul>
                         <li><a class="icon fa-circle-o" href="<%=context%>/preferencias.jsp"> Preferencias</a></li>
 
-                        <li><a class="icon fa-circle-o" href="#"> opcion 2</a></li>
+                        <li><a class="icon fa-circle-o" href="<%=context%>/reportesAdministrador.jsp"> Reportes</a></li>
 
                     </ul>
                 </li>

@@ -24,6 +24,14 @@
         <servlet-name>ServletUsuario</servlet-name>
         <servlet-class>Servlets.ServletUsuario</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>ServletReportePost</servlet-name>
+        <servlet-class>Servlets.ServletReportePost</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>ServletReporteUsuarios</servlet-name>
+        <servlet-class>Servlets.ServletReporteUsuarios</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>ServletLogin</servlet-name>
         <url-pattern>/ServletLogin</url-pattern>
@@ -47,6 +55,14 @@
     <servlet-mapping>
         <servlet-name>ServletUsuario</servlet-name>
         <url-pattern>/ServletUsuario</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ServletReportePost</servlet-name>
+        <url-pattern>/ServletReportePost</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ServletReporteUsuarios</servlet-name>
+        <url-pattern>/ServletReporteUsuarios</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>
