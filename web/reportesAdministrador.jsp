@@ -33,35 +33,7 @@
         <!-- header -->
         <%@include file="headerAdministrador.jsp" %>
         <input type="hidden" name="contexto" id="contexto" value="<%=context%>"/>
-
-        <!-- Reporte post hechos-->
-        <div id="agregarNuevoProfe" >
-            <div class="box container">
-                <div class="col-xs-12">
-                    <h3 class="text-center">Reporte de post realizados</h3></br>
-                    <!--<div class="col-md-6 col-lg-6 col-md-offset-6 col-lg-offset-3">-->
-                    <!-- Manda a ese servlet en esa opcion 4-->
-                    <form method="post" action="<%=context%>/ServletReportePost" class="form-inline">
-
-                        <div class="input-group date">
-                            <span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span></span>
-                            <input type="text"  name="fechaIP" id="fechaIP" class="form-control" placeholder="Fecha de inicio" required>
-                        </div>
-                        <div class="input-group date">
-                            <span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span></span>
-                            <input type="text"  name="fechaFP" id="fechaFP" class="form-control" placeholder="Fecha de fin" required>
-                        </div>
-
-                        <div id="setGroupGrade">
-                            <br>
-                            <button class="btn btn-danger icon fa-file-pdf-o" type="submit">Generar</button>
-                        </div>
-                    </form>
-                    <!--</div>-->
-                </div>
-            </div>
-        </div>
-
+        
         <!-- Reporte usuarios agregados -->
         <div id="agregarNuevoProfe" >
             <div class="box container">
